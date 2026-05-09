@@ -3,19 +3,23 @@ import { apiSlice } from "../../api/EntryApi";
 export interface Tasker {
   id: number;
   name: string;
+  title: string;
+  image?: string;
   phone: string;
-  email: string;
+  email?: string;
   specialties: string;
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
-//type ApiResponse<T> = T | { data: T };
 
 export interface CreateTaskerRequest {
   name: string;
+  title: string;
+  image?: string; // URL string (paste URL mode or returned from server)
+  imageFile?: File | null; // actual File object for multipart upload
   phone: string;
-  email: string;
+  email?: string;
   specialties: string;
   isActive: boolean;
 }
@@ -45,11 +49,36 @@ export const taskerApi = apiSlice.injectEndpoints({
     }),
 
     createTasker: builder.mutation<Tasker, CreateTaskerRequest>({
-      query: (data) => ({
-        url: "taskers",
-        method: "POST",
-        body: data,
-      }),
+      query: (data) => {
+        // Build multipart FormData — same pattern as InfoPost
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("title", data.title);
+        formData.append("phone", data.phone);
+        formData.append("specialties", data.specialties);
+        formData.append("isActive", String(data.isActive));
+
+        if (data.email) {
+          formData.append("email", data.email);
+        }
+
+        // Real File picked → multipart file upload
+        if (data.imageFile) {
+          formData.append("image", data.imageFile);
+        } else if (data.image) {
+          // URL string pasted → send as plain field
+          formData.append("image", data.image);
+        }
+
+        return {
+          url: "taskers",
+          method: "POST",
+          body: formData,
+          // formData: true tells RTK Query NOT to set Content-Type manually
+          // so browser sets it with the correct multipart boundary
+          formData: true,
+        };
+      },
       invalidatesTags: ["Tasker"],
     }),
 
