@@ -76,9 +76,9 @@ export default function AdminLayout() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin/legal" className={navLinkClass}>
+            <NavLink to="/admin/course" className={navLinkClass}>
               <Scale size={15} />
-              <h1 className="text-[14.5px]">Legal and Official Services</h1>
+              <h1 className="text-[14.5px]">Courses</h1>
             </NavLink>
           </li>
           <li>

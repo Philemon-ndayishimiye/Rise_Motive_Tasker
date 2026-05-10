@@ -18,6 +18,7 @@ import ViewProduct from "@/layouts/Admin/ViewProduct";
 import Login from "@/pages/Login";
 import InfoPostAdmin from "@/layouts/Admin/Information";
 import SpotService from "@/layouts/Admin/SpotService";
+import Courses from "@/layouts/Admin/Courses";
 
 const AppRouter = () => {
   return (
@@ -44,6 +45,7 @@ const AppRouter = () => {
           <Route path="products" element={<ViewProduct />} />
           <Route path="info" element={<InfoPostAdmin />} />
           <Route path="spotservice" element={<SpotService />} />
+          <Route path="course" element={<Courses />} />
         </Route>
       </Routes>
     </BrowserRouter>
