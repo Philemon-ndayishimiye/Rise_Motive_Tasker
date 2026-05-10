@@ -6,8 +6,11 @@ export type InfoPostCategory =
   | "JOB"
   | "SCHOLARSHIP"
   | "COMPETITION"
-  | "COMMUNITY"
-  | "ADVISORY"
+  | "GRANTS_AND_FUNDING"
+  | "RISE_MOTIVE"
+  | "TENDERS"
+  | "INTERNSHIPS"
+  | "TRAINING_AND_COURSES"
   | string;
 
 export interface InfoPost {

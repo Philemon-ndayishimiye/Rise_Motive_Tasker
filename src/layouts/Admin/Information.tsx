@@ -58,8 +58,11 @@ function CategoryBadge({ cat }: { cat: string }) {
     JOB: { bg: "#DBEAFE", color: "#1E3A8A" },
     SCHOLARSHIP: { bg: "#FEF9C3", color: "#92400E" },
     COMPETITION: { bg: "#FCE7F3", color: "#9D174D" },
-    COMMUNITY: { bg: "#DCFCE7", color: "#14532D" },
-    ADVISORY: { bg: "#EDE9FE", color: "#4C1D95" },
+    GRANTS_AND_FUNDING: { bg: "#DCFCE7", color: "#14532D" },
+    RISE_MOTIVE: { bg: "#EDE9FE", color: "#4C1D95" },
+    TENDERS: { bg: "#FFF7ED", color: "#92400E" },
+    INTERNSHIPS: { bg: "#F0FDF4", color: "#166534" },
+    TRAINING_AND_COURSES: { bg: "#EFF6FF", color: "#1E40AF" },
   };
   const s = map[cat] ?? { bg: "#F3F4F6", color: "#374151" };
   return (
@@ -448,8 +451,13 @@ function InfoPostModal({
                   <option value="JOB">JOB</option>
                   <option value="SCHOLARSHIP">SCHOLARSHIP</option>
                   <option value="COMPETITION">COMPETITION</option>
-                  <option value="COMMUNITY">COMMUNITY</option>
-                  <option value="ADVISORY">ADVISORY</option>
+                  <option value="GRANTS_AND_FUNDING">GRANTS & FUNDING</option>
+                  <option value="RISE_MOTIVE">RISE MOTIVE</option>
+                  <option value="TENDERS">TENDERS</option>
+                  <option value="INTERNSHIPS">INTERNSHIPS</option>
+                  <option value="TRAINING_AND_COURSES">
+                    TRAINING & COURSES
+                  </option>
                 </select>
               </div>
 
