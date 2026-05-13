@@ -25,6 +25,7 @@ export interface InfoPost {
   contactInfo?: string;
   image?: string; // Cloudinary URL stored by the server
   qualificationCriteria: string[];
+  stepsToApply: string[];
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -47,6 +48,7 @@ export interface CreateInfoPostRequest {
   image?: string;
   contactInfo?: string;
   qualificationCriteria: string[];
+  stepsToApply: string[];
   isActive: boolean;
 }
 
@@ -62,6 +64,7 @@ export interface UpdateInfoPostRequest {
   contactInfo?: string;
   image?: string;
   qualificationCriteria?: string[];
+  stepsToApply: string[];
   isActive?: boolean;
 }
 

@@ -21,6 +21,7 @@ import {
   Trash2,
   ImagePlus,
   Link,
+  ListChecks,
 } from "lucide-react";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -125,14 +126,129 @@ const sectionTitle: React.CSSProperties = {
 };
 
 // ── Form state ─────────────────────────────────────────────────────────────
-// CREATE mode: imageFile holds a File to upload via FormData
-// EDIT mode:   imageUrl holds the existing Cloudinary URL (no re-upload)
 
 interface InfoPostFormState extends CreateInfoPostRequest {
-  // used only in create mode — the actual File to send as multipart
   imageFile?: File | null;
-  // used in both modes — current image URL (Cloudinary URL or empty)
   imageUrl: string;
+}
+
+// ── Reusable list-editor ───────────────────────────────────────────────────
+
+function StringListEditor({
+  label,
+  items,
+  onChange,
+  placeholder,
+  addLabel,
+}: {
+  label: string;
+  items: string[];
+  onChange: (items: string[]) => void;
+  placeholder?: string;
+  addLabel?: string;
+}) {
+  const addItem = () => onChange([...items, ""]);
+  const updateItem = (i: number, val: string) => {
+    const arr = [...items];
+    arr[i] = val;
+    onChange(arr);
+  };
+  const removeItem = (i: number) => onChange(items.filter((_, idx) => idx !== i));
+
+  return (
+    <div style={sectionStyle}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "12px",
+        }}
+      >
+        <p style={{ ...sectionTitle, margin: 0 }}>{label}</p>
+        <button
+          onClick={addItem}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            padding: "6px 12px",
+            borderRadius: "8px",
+            border: "1px solid #BFDBFE",
+            background: "#EFF6FF",
+            color: "#1E3A8A",
+            fontSize: "12px",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          <Plus size={12} /> {addLabel ?? "Add Item"}
+        </button>
+      </div>
+
+      {items.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            borderRadius: "10px",
+            border: "1px dashed #BFDBFE",
+            background: "#fff",
+          }}
+        >
+          <p style={{ fontSize: "12px", color: "#9CA3AF", margin: 0 }}>
+            No items yet — click <strong>"{addLabel ?? "Add Item"}"</strong> to
+            add.
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {items.map((c, i) => (
+            <div
+              key={i}
+              style={{ display: "flex", gap: "8px", alignItems: "center" }}
+            >
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "#9CA3AF",
+                  minWidth: "20px",
+                  textAlign: "right",
+                  fontWeight: 700,
+                  flexShrink: 0,
+                }}
+              >
+                {i + 1}.
+              </span>
+              <input
+                style={{ ...inputStyle, flex: 1 }}
+                value={c}
+                onChange={(e) => updateItem(i, e.target.value)}
+                placeholder={placeholder ?? "Enter item…"}
+              />
+              <button
+                onClick={() => removeItem(i)}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "8px",
+                  border: "1px solid #FEE2E2",
+                  background: "#FFF5F5",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+              >
+                <Trash2 size={13} color="#EF4444" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ── Form Modal ─────────────────────────────────────────────────────────────
@@ -164,13 +280,13 @@ function InfoPostModal({
     applyLink: initial?.applyLink ?? "",
     contactInfo: initial?.contactInfo ?? "",
     qualificationCriteria: initial?.qualificationCriteria ?? [],
+    stepsToApply: initial?.stepsToApply ?? [],
     isActive: initial?.isActive ?? true,
     imageFile: null,
     imageUrl: initial?.image ?? "",
   });
 
   const [slugManual, setSlugManual] = useState(Boolean(initial?.slug));
-  // preview is always a displayable string
   const [preview, setPreview] = useState<string>(initial?.image ?? "");
   const [imageInputType, setImageInputType] = useState<"url" | "file">("url");
 
@@ -184,7 +300,6 @@ function InfoPostModal({
     if (!slugManual) set("slug", generateSlug(val));
   };
 
-  // CREATE only: pick a file for multipart upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -192,7 +307,6 @@ function InfoPostModal({
     setPreview(URL.createObjectURL(file));
   };
 
-  // EDIT or CREATE (URL mode): just store the URL string
   const handleImageUrlChange = (val: string) => {
     set("imageUrl", val);
     set("imageFile", null);
@@ -204,21 +318,6 @@ function InfoPostModal({
     set("imageFile", null);
     setPreview("");
   };
-
-  const addCriteria = () =>
-    set("qualificationCriteria", [...form.qualificationCriteria, ""]);
-
-  const updateCriteria = (i: number, val: string) => {
-    const arr = [...form.qualificationCriteria];
-    arr[i] = val;
-    set("qualificationCriteria", arr);
-  };
-
-  const removeCriteria = (i: number) =>
-    set(
-      "qualificationCriteria",
-      form.qualificationCriteria.filter((_, idx) => idx !== i),
-    );
 
   const validate = () => {
     if (!form.title.trim()) {
@@ -243,6 +342,7 @@ function InfoPostModal({
     }
     return true;
   };
+
   const handleSubmit = async () => {
     if (!validate()) return;
 
@@ -259,6 +359,7 @@ function InfoPostModal({
         image: form.imageUrl,
         imageFile: form.imageFile,
         qualificationCriteria: form.qualificationCriteria,
+        stepsToApply: form.stepsToApply,
         isActive: form.isActive,
       });
     } else {
@@ -273,12 +374,12 @@ function InfoPostModal({
         contactInfo: form.contactInfo,
         image: form.imageUrl || initial?.image,
         qualificationCriteria: form.qualificationCriteria,
+        stepsToApply: form.stepsToApply,
         isActive: form.isActive,
       });
     }
   };
 
-  // In edit mode the image section only shows URL input (no re-upload)
   const isEditMode = mode === "edit";
 
   return (
@@ -384,13 +485,7 @@ function InfoPostModal({
                     (auto-generated from title)
                   </span>
                 </label>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    alignItems: "center",
-                  }}
-                >
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                   <div style={{ position: "relative", flex: 1 }}>
                     <Link
                       size={13}
@@ -455,9 +550,7 @@ function InfoPostModal({
                   <option value="RISE_MOTIVE">RISE MOTIVE</option>
                   <option value="TENDERS">TENDERS</option>
                   <option value="INTERNSHIPS">INTERNSHIPS</option>
-                  <option value="TRAINING_AND_COURSES">
-                    TRAINING & COURSES
-                  </option>
+                  <option value="TRAINING_AND_COURSES">TRAINING & COURSES</option>
                 </select>
               </div>
 
@@ -525,7 +618,6 @@ function InfoPostModal({
               }}
             >
               <p style={{ ...sectionTitle, margin: 0 }}>Cover Image</p>
-              {/* File upload toggle only available on CREATE */}
               {!isEditMode && (
                 <div style={{ display: "flex", gap: "6px" }}>
                   {(["url", "file"] as const).map((t) => (
@@ -542,8 +634,7 @@ function InfoPostModal({
                         fontSize: "11px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        background:
-                          imageInputType === t ? "#1E3A8A" : "#EFF6FF",
+                        background: imageInputType === t ? "#1E3A8A" : "#EFF6FF",
                         color: imageInputType === t ? "#fff" : "#1E3A8A",
                       }}
                     >
@@ -554,23 +645,10 @@ function InfoPostModal({
               )}
             </div>
 
-            {/* URL input — always shown in edit mode, shown in create URL mode */}
             {(isEditMode || imageInputType === "url") && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "10px",
-                }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {isEditMode && (
-                  <p
-                    style={{
-                      fontSize: "11px",
-                      color: "#9CA3AF",
-                      margin: "0 0 4px",
-                    }}
-                  >
+                  <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "0 0 4px" }}>
                     To change the image, paste a new URL below. Leave blank to
                     keep the current image.
                   </p>
@@ -621,7 +699,6 @@ function InfoPostModal({
               </div>
             )}
 
-            {/* File upload — only in create mode */}
             {!isEditMode && imageInputType === "file" && (
               <div>
                 <label
@@ -659,13 +736,7 @@ function InfoPostModal({
                   ) : (
                     <>
                       <ImagePlus size={30} color="#93C5FD" />
-                      <span
-                        style={{
-                          fontSize: "13px",
-                          color: "#6B7280",
-                          fontWeight: 600,
-                        }}
-                      >
+                      <span style={{ fontSize: "13px", color: "#6B7280", fontWeight: 600 }}>
                         Click to upload image
                       </span>
                       <span style={{ fontSize: "11px", color: "#9CA3AF" }}>
@@ -677,12 +748,7 @@ function InfoPostModal({
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      opacity: 0,
-                      cursor: "pointer",
-                    }}
+                    style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer" }}
                   />
                 </label>
                 {preview && (
@@ -709,7 +775,16 @@ function InfoPostModal({
           </div>
 
           {/* Qualification Criteria */}
-          <div style={sectionStyle}>
+          <StringListEditor
+            label="Qualification Criteria"
+            items={form.qualificationCriteria}
+            onChange={(items) => set("qualificationCriteria", items)}
+            placeholder="e.g. Bachelor's degree in Computer Science"
+            addLabel="Add Criteria"
+          />
+
+          {/* ── Steps to Apply ── NEW ── */}
+          <div style={{ ...sectionStyle, borderColor: "#C7D2FE", background: "#F5F3FF" }}>
             <div
               style={{
                 display: "flex",
@@ -718,81 +793,122 @@ function InfoPostModal({
                 marginBottom: "12px",
               }}
             >
-              <p style={{ ...sectionTitle, margin: 0 }}>
-                Qualification Criteria
-              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <div
+                  style={{
+                    width: "26px",
+                    height: "26px",
+                    borderRadius: "7px",
+                    background: "#EDE9FE",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <ListChecks size={14} color="#4C1D95" />
+                </div>
+                <div>
+                  <p style={{ ...sectionTitle, margin: 0, color: "#4C1D95" }}>
+                    Steps to Apply
+                  </p>
+                  <p style={{ fontSize: "10px", color: "#8B5CF6", margin: 0, marginTop: "1px" }}>
+                    Shown to users as a popup guide
+                  </p>
+                </div>
+              </div>
               <button
-                onClick={addCriteria}
+                onClick={() =>
+                  set("stepsToApply", [...(form.stepsToApply ?? []), ""])
+                }
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "5px",
                   padding: "6px 12px",
                   borderRadius: "8px",
-                  border: "1px solid #BFDBFE",
-                  background: "#EFF6FF",
-                  color: "#1E3A8A",
+                  border: "1px solid #C4B5FD",
+                  background: "#EDE9FE",
+                  color: "#4C1D95",
                   fontSize: "12px",
                   fontWeight: 700,
                   cursor: "pointer",
                 }}
               >
-                <Plus size={12} /> Add Criteria
+                <Plus size={12} /> Add Step
               </button>
             </div>
 
-            {form.qualificationCriteria.length === 0 ? (
+            {(!form.stepsToApply || form.stepsToApply.length === 0) ? (
               <div
                 style={{
                   textAlign: "center",
                   padding: "20px",
                   borderRadius: "10px",
-                  border: "1px dashed #BFDBFE",
+                  border: "1px dashed #C4B5FD",
                   background: "#fff",
                 }}
               >
+                <ListChecks
+                  size={24}
+                  color="#C4B5FD"
+                  style={{ marginBottom: "6px" }}
+                />
                 <p style={{ fontSize: "12px", color: "#9CA3AF", margin: 0 }}>
-                  No criteria yet — click <strong>"Add Criteria"</strong> to add
-                  requirements.
+                  No steps yet — click <strong>"Add Step"</strong> to add
+                  application steps for users.
                 </p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                }}
-              >
-                {form.qualificationCriteria.map((c, i) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {(form.stepsToApply ?? []).map((step, i) => (
                   <div
                     key={i}
-                    style={{
-                      display: "flex",
-                      gap: "8px",
-                      alignItems: "center",
-                    }}
+                    style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}
                   >
-                    <span
+                    {/* Step number circle */}
+                    <div
                       style={{
-                        fontSize: "12px",
-                        color: "#9CA3AF",
-                        minWidth: "20px",
-                        textAlign: "right",
-                        fontWeight: 700,
+                        width: "26px",
+                        height: "26px",
+                        borderRadius: "50%",
+                        background: "linear-gradient(135deg, #4C1D95, #7C3AED)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontSize: "11px",
+                        fontWeight: 800,
                         flexShrink: 0,
+                        marginTop: "8px",
+                        boxShadow: "0 2px 6px rgba(124,58,237,0.3)",
                       }}
                     >
-                      {i + 1}.
-                    </span>
-                    <input
-                      style={{ ...inputStyle, flex: 1 }}
-                      value={c}
-                      onChange={(e) => updateCriteria(i, e.target.value)}
-                      placeholder="e.g. Bachelor's degree in Computer Science"
+                      {i + 1}
+                    </div>
+                    <textarea
+                      style={{
+                        ...inputStyle,
+                        flex: 1,
+                        minHeight: "60px",
+                        resize: "vertical",
+                        borderColor: "#C4B5FD",
+                      }}
+                      value={step}
+                      onChange={(e) => {
+                        const arr = [...(form.stepsToApply ?? [])];
+                        arr[i] = e.target.value;
+                        set("stepsToApply", arr);
+                      }}
+                      placeholder={`Step ${i + 1}: e.g. Visit the official website and download the application form`}
                     />
                     <button
-                      onClick={() => removeCriteria(i)}
+                      onClick={() => {
+                        set(
+                          "stepsToApply",
+                          (form.stepsToApply ?? []).filter((_, idx) => idx !== i),
+                        );
+                      }}
                       style={{
                         width: "32px",
                         height: "32px",
@@ -804,6 +920,7 @@ function InfoPostModal({
                         justifyContent: "center",
                         cursor: "pointer",
                         flexShrink: 0,
+                        marginTop: "6px",
                       }}
                     >
                       <Trash2 size={13} color="#EF4444" />
@@ -824,23 +941,10 @@ function InfoPostModal({
             }}
           >
             <div>
-              <p
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 700,
-                  color: "#374151",
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontSize: "13px", fontWeight: 700, color: "#374151", margin: 0 }}>
                 Publish immediately
               </p>
-              <p
-                style={{
-                  fontSize: "11px",
-                  color: "#9CA3AF",
-                  margin: "2px 0 0",
-                }}
-              >
+              <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "2px 0 0" }}>
                 Post will be visible to users when active
               </p>
             </div>
@@ -935,12 +1039,9 @@ export default function InfoPostAdmin() {
   const items = data?.items ?? [];
   const total = data?.total ?? 0;
 
-  // ── Handlers ─────────────────────────────────────────────────────────────
   interface ApiError {
     status?: number;
-    data?: {
-      message?: string;
-    };
+    data?: { message?: string };
   }
 
   const handleCreate = async (
@@ -982,8 +1083,6 @@ export default function InfoPostAdmin() {
     }
   };
 
-  // ── Columns ───────────────────────────────────────────────────────────────
-
   const columns: Column<InfoPost>[] = [
     {
       key: "title",
@@ -1012,6 +1111,35 @@ export default function InfoPostAdmin() {
         <span style={{ fontSize: "12px", color: "#6B7280" }}>
           {row.qualificationCriteria?.length ?? 0} item
           {(row.qualificationCriteria?.length ?? 0) !== 1 ? "s" : ""}
+        </span>
+      ),
+    },
+    {
+      key: "stepsToApply",
+      label: "Steps",
+      render: (row) => (
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "4px",
+            fontSize: "12px",
+            color: row.stepsToApply?.length ? "#4C1D95" : "#9CA3AF",
+            background: row.stepsToApply?.length ? "#EDE9FE" : "transparent",
+            padding: row.stepsToApply?.length ? "2px 8px" : "0",
+            borderRadius: "999px",
+            fontWeight: row.stepsToApply?.length ? 700 : 400,
+          }}
+        >
+          {row.stepsToApply?.length ? (
+            <>
+              <ListChecks size={11} />
+              {row.stepsToApply.length} step
+              {row.stepsToApply.length !== 1 ? "s" : ""}
+            </>
+          ) : (
+            "—"
+          )}
         </span>
       ),
     },
@@ -1076,8 +1204,6 @@ export default function InfoPostAdmin() {
       ),
     },
   ];
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="w-full min-w-0">
