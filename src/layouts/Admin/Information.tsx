@@ -153,7 +153,8 @@ function StringListEditor({
     arr[i] = val;
     onChange(arr);
   };
-  const removeItem = (i: number) => onChange(items.filter((_, idx) => idx !== i));
+  const removeItem = (i: number) =>
+    onChange(items.filter((_, idx) => idx !== i));
 
   return (
     <div style={sectionStyle}>
@@ -485,7 +486,9 @@ function InfoPostModal({
                     (auto-generated from title)
                   </span>
                 </label>
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <div
+                  style={{ display: "flex", gap: "8px", alignItems: "center" }}
+                >
                   <div style={{ position: "relative", flex: 1 }}>
                     <Link
                       size={13}
@@ -546,11 +549,13 @@ function InfoPostModal({
                   <option value="JOB">JOB</option>
                   <option value="SCHOLARSHIP">SCHOLARSHIP</option>
                   <option value="COMPETITION">COMPETITION</option>
-                  <option value="GRANTS_AND_FUNDING">GRANTS & FUNDING</option>
+                  <option value="FUNDING">FUNDING</option>
                   <option value="RISE_MOTIVE">RISE MOTIVE</option>
                   <option value="TENDERS">TENDERS</option>
                   <option value="INTERNSHIPS">INTERNSHIPS</option>
-                  <option value="TRAINING_AND_COURSES">TRAINING & COURSES</option>
+                  <option value="TRAINING_AND_COURSES">
+                    TRAINING & COURSES
+                  </option>
                 </select>
               </div>
 
@@ -634,7 +639,8 @@ function InfoPostModal({
                         fontSize: "11px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        background: imageInputType === t ? "#1E3A8A" : "#EFF6FF",
+                        background:
+                          imageInputType === t ? "#1E3A8A" : "#EFF6FF",
                         color: imageInputType === t ? "#fff" : "#1E3A8A",
                       }}
                     >
@@ -646,9 +652,21 @@ function InfoPostModal({
             </div>
 
             {(isEditMode || imageInputType === "url") && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
                 {isEditMode && (
-                  <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "0 0 4px" }}>
+                  <p
+                    style={{
+                      fontSize: "11px",
+                      color: "#9CA3AF",
+                      margin: "0 0 4px",
+                    }}
+                  >
                     To change the image, paste a new URL below. Leave blank to
                     keep the current image.
                   </p>
@@ -736,7 +754,13 @@ function InfoPostModal({
                   ) : (
                     <>
                       <ImagePlus size={30} color="#93C5FD" />
-                      <span style={{ fontSize: "13px", color: "#6B7280", fontWeight: 600 }}>
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          color: "#6B7280",
+                          fontWeight: 600,
+                        }}
+                      >
                         Click to upload image
                       </span>
                       <span style={{ fontSize: "11px", color: "#9CA3AF" }}>
@@ -748,7 +772,12 @@ function InfoPostModal({
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer" }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: 0,
+                      cursor: "pointer",
+                    }}
                   />
                 </label>
                 {preview && (
@@ -784,7 +813,13 @@ function InfoPostModal({
           />
 
           {/* ── Steps to Apply ── NEW ── */}
-          <div style={{ ...sectionStyle, borderColor: "#C7D2FE", background: "#F5F3FF" }}>
+          <div
+            style={{
+              ...sectionStyle,
+              borderColor: "#C7D2FE",
+              background: "#F5F3FF",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -793,7 +828,9 @@ function InfoPostModal({
                 marginBottom: "12px",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <div
                   style={{
                     width: "26px",
@@ -812,7 +849,14 @@ function InfoPostModal({
                   <p style={{ ...sectionTitle, margin: 0, color: "#4C1D95" }}>
                     Steps to Apply
                   </p>
-                  <p style={{ fontSize: "10px", color: "#8B5CF6", margin: 0, marginTop: "1px" }}>
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      color: "#8B5CF6",
+                      margin: 0,
+                      marginTop: "1px",
+                    }}
+                  >
                     Shown to users as a popup guide
                   </p>
                 </div>
@@ -839,7 +883,7 @@ function InfoPostModal({
               </button>
             </div>
 
-            {(!form.stepsToApply || form.stepsToApply.length === 0) ? (
+            {!form.stepsToApply || form.stepsToApply.length === 0 ? (
               <div
                 style={{
                   textAlign: "center",
@@ -860,11 +904,17 @@ function InfoPostModal({
                 </p>
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+              >
                 {(form.stepsToApply ?? []).map((step, i) => (
                   <div
                     key={i}
-                    style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      alignItems: "flex-start",
+                    }}
                   >
                     {/* Step number circle */}
                     <div
@@ -906,7 +956,9 @@ function InfoPostModal({
                       onClick={() => {
                         set(
                           "stepsToApply",
-                          (form.stepsToApply ?? []).filter((_, idx) => idx !== i),
+                          (form.stepsToApply ?? []).filter(
+                            (_, idx) => idx !== i,
+                          ),
                         );
                       }}
                       style={{
@@ -941,10 +993,23 @@ function InfoPostModal({
             }}
           >
             <div>
-              <p style={{ fontSize: "13px", fontWeight: 700, color: "#374151", margin: 0 }}>
+              <p
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  color: "#374151",
+                  margin: 0,
+                }}
+              >
                 Publish immediately
               </p>
-              <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "2px 0 0" }}>
+              <p
+                style={{
+                  fontSize: "11px",
+                  color: "#9CA3AF",
+                  margin: "2px 0 0",
+                }}
+              >
                 Post will be visible to users when active
               </p>
             </div>

@@ -6,7 +6,7 @@ export type InfoPostCategory =
   | "JOB"
   | "SCHOLARSHIP"
   | "COMPETITION"
-  | "GRANTS_AND_FUNDING"
+  | "FUNDING"
   | "RISE_MOTIVE"
   | "TENDERS"
   | "INTERNSHIPS"
