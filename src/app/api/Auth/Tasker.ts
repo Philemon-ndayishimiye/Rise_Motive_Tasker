@@ -1,5 +1,49 @@
 import { apiSlice } from "../../api/EntryApi";
 
+export interface ServiceRequest {
+  id: number;
+  trackingCode: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  service?: string;
+  description: string;
+  documentUrl?: string;
+  preferredDate?: string;
+  status: "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+  tasker?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Add this interface at the top
+
+export interface TaskerDashboardResponse {
+  tasker: {
+    id: number;
+    name: string;
+    email?: string;
+    title: string;
+    specialties: string;
+    image?: string;
+  };
+  services: {
+    egov: ServiceRequest[];
+    applicationDocs: ServiceRequest[];
+    creativeMedia: ServiceRequest[];
+    webDigital: ServiceRequest[];
+    legal: ServiceRequest[];
+  };
+  summary: {
+    totalAssigned: number;
+    egov: number;
+    applicationDocs: number;
+    creativeMedia: number;
+    webDigital: number;
+    legal: number;
+  };
+}
+
 export interface Tasker {
   id: number;
   name: string;
@@ -109,6 +153,14 @@ export const taskerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Tasker"],
     }),
+
+    getMyServices: builder.query<TaskerDashboardResponse, void>({
+      query: () => ({
+        url: "tasker/my-services",
+        method: "GET",
+      }),
+      providesTags: ["Tasker"],
+    }),
   }),
 });
 
@@ -119,4 +171,5 @@ export const {
   useUpdateTaskerMutation,
   useDeleteTaskerMutation,
   useToggleActivateTaskerMutation,
+  useGetMyServicesQuery,
 } = taskerApi;

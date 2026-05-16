@@ -19,6 +19,17 @@ import Login from "@/pages/Login";
 import InfoPostAdmin from "@/layouts/Admin/Information";
 import SpotService from "@/layouts/Admin/SpotService";
 import Courses from "@/layouts/Admin/Courses";
+import TaskerLayout from "@/layouts/Tasker/TaskerLayout";
+import TaskerDashboard from "@/layouts/Tasker/Dashboard";
+import MediaLayout from "@/layouts/Media/MediaLayout";
+import MediaDashboard from "@/layouts/Media/MediaDashboard";
+import ServiceRequest from "@/layouts/Tasker/ServiceRequest";
+import TaskerSettings from "@/layouts/Tasker/settings";
+import TaskerProfile from "@/layouts/Tasker/TaskerProfile";
+import MediaInformation from "@/layouts/Media/MediaInformtion";
+import MediaProduct from "@/layouts/Media/MediaProduct";
+import MediaSettings from "@/layouts/Media/MediaSettings";
+import MediaProfile from "@/layouts/Media/MediaProfile";
 
 const AppRouter = () => {
   return (
@@ -46,6 +57,25 @@ const AppRouter = () => {
           <Route path="info" element={<InfoPostAdmin />} />
           <Route path="spotservice" element={<SpotService />} />
           <Route path="course" element={<Courses />} />
+        </Route>
+
+        {/* Tasker */}
+
+        <Route path="/tasker" element={<TaskerLayout />}>
+          <Route path="dashboard" element={<TaskerDashboard />} />
+          <Route path="service" element={<ServiceRequest />} />
+          <Route path="settings" element={<TaskerSettings />} />
+          <Route path="profile" element={<TaskerProfile />} />
+        </Route>
+
+        {/* Media */}
+
+        <Route path="/media" element={<MediaLayout />}>
+          <Route path="dashboard" element={<MediaDashboard />} />
+          <Route path="info" element={<MediaInformation />} />
+          <Route path="products" element={<MediaProduct />} />
+          <Route path="settings" element={<MediaSettings />} />
+          <Route path="profile" element={<MediaProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>
