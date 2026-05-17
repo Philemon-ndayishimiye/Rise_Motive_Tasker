@@ -1,10 +1,6 @@
 import { useGetMyServicesQuery } from "../../app/api/Auth/Tasker";
 import {
-  Globe,
-  FileText,
-  Palette,
-  Code,
-  Scale,
+ 
   TrendingUp,
   Clock,
   CheckCircle2,
@@ -27,98 +23,98 @@ import {
 
 // ── Stat Card ───────────────────────────────────────────────────────────────
 
-interface StatCardProps {
-  icon: React.ElementType;
-  number: number;
-  name: string;
-  backgroundColor: string;
-  iconColor: string;
-  isLoading?: boolean;
-}
+// interface StatCardProps {
+//   icon: React.ElementType;
+//   number: number;
+//   name: string;
+//   backgroundColor: string;
+//   iconColor: string;
+//   isLoading?: boolean;
+// }
 
-function StatCard({
-  icon: Icon,
-  number,
-  name,
-  backgroundColor,
-  iconColor,
-  isLoading,
-}: StatCardProps) {
-  return (
-    <div
-      style={{
-        background: "#fff",
-        border: "1px solid #DBEAFE",
-        borderRadius: "14px",
-        padding: "18px",
-        display: "flex",
-        alignItems: "flex-start",
-        gap: "14px",
-        transition: "box-shadow 0.2s",
-      }}
-      onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 4px 20px rgba(30,58,138,0.1)")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLDivElement).style.boxShadow = "none")
-      }
-    >
-      <div
-        style={{
-          width: "44px",
-          height: "44px",
-          borderRadius: "12px",
-          background: backgroundColor,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <Icon size={20} color={iconColor} />
-      </div>
-      <div style={{ minWidth: 0 }}>
-        {isLoading ? (
-          <div
-            style={{
-              height: "28px",
-              width: "40px",
-              background: "#E5E7EB",
-              borderRadius: "6px",
-              marginBottom: "6px",
-              animation: "pulse 1.5s ease-in-out infinite",
-            }}
-          />
-        ) : (
-          <p
-            style={{
-              fontSize: "26px",
-              fontWeight: 800,
-              color: "#1E3A8A",
-              margin: 0,
-              lineHeight: 1,
-              fontFamily: "Playfair Display, serif",
-            }}
-          >
-            {number}
-          </p>
-        )}
-        <p
-          style={{
-            fontSize: "11px",
-            color: "#6B7280",
-            margin: "5px 0 0",
-            fontWeight: 600,
-            lineHeight: 1.3,
-          }}
-        >
-          {name}
-        </p>
-      </div>
-    </div>
-  );
-}
+// function StatCard({
+//   icon: Icon,
+//   number,
+//   name,
+//   backgroundColor,
+//   iconColor,
+//   isLoading,
+// }: StatCardProps) {
+//   return (
+//     <div
+//       style={{
+//         background: "#fff",
+//         border: "1px solid #DBEAFE",
+//         borderRadius: "14px",
+//         padding: "18px",
+//         display: "flex",
+//         alignItems: "flex-start",
+//         gap: "14px",
+//         transition: "box-shadow 0.2s",
+//       }}
+//       onMouseEnter={(e) =>
+//         ((e.currentTarget as HTMLDivElement).style.boxShadow =
+//           "0 4px 20px rgba(30,58,138,0.1)")
+//       }
+//       onMouseLeave={(e) =>
+//         ((e.currentTarget as HTMLDivElement).style.boxShadow = "none")
+//       }
+//     >
+//       <div
+//         style={{
+//           width: "44px",
+//           height: "44px",
+//           borderRadius: "12px",
+//           background: backgroundColor,
+//           display: "flex",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           flexShrink: 0,
+//         }}
+//       >
+//         <Icon size={20} color={iconColor} />
+//       </div>
+//       <div style={{ minWidth: 0 }}>
+//         {isLoading ? (
+//           <div
+//             style={{
+//               height: "28px",
+//               width: "40px",
+//               background: "#E5E7EB",
+//               borderRadius: "6px",
+//               marginBottom: "6px",
+//               animation: "pulse 1.5s ease-in-out infinite",
+//             }}
+//           />
+//         ) : (
+//           <p
+//             style={{
+//               fontSize: "26px",
+//               fontWeight: 800,
+//               color: "#1E3A8A",
+//               margin: 0,
+//               lineHeight: 1,
+//               fontFamily: "Playfair Display, serif",
+//             }}
+//           >
+//             {number}
+//           </p>
+//         )}
+//         <p
+//           style={{
+//             fontSize: "11px",
+//             color: "#6B7280",
+//             margin: "5px 0 0",
+//             fontWeight: 600,
+//             lineHeight: 1.3,
+//           }}
+//         >
+//           {name}
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }
 
 // ── Status breakdown mini-card ───────────────────────────────────────────────
 
@@ -375,54 +371,8 @@ export default function TaskerDashboard() {
           marginBottom: "24px",
         }}
       >
-        <StatCard
-          icon={TrendingUp}
-          number={summary?.totalAssigned ?? 0}
-          name="Total Assigned Services"
-          backgroundColor="#DBEAFE"
-          iconColor="#1E3A8A"
-          isLoading={isLoading}
-        />
-        <StatCard
-          icon={Globe}
-          number={summary?.egov ?? 0}
-          name="e-Government & Online Services"
-          backgroundColor="#FEF9C3"
-          iconColor="#92400E"
-          isLoading={isLoading}
-        />
-        <StatCard
-          icon={FileText}
-          number={summary?.applicationDocs ?? 0}
-          name="Application & Documentation"
-          backgroundColor="#E0F2FE"
-          iconColor="#0369A1"
-          isLoading={isLoading}
-        />
-        <StatCard
-          icon={Palette}
-          number={summary?.creativeMedia ?? 0}
-          name="Creative & Media Services"
-          backgroundColor="#FCE7F3"
-          iconColor="#9D174D"
-          isLoading={isLoading}
-        />
-        <StatCard
-          icon={Code}
-          number={summary?.webDigital ?? 0}
-          name="Web & Digital Solutions"
-          backgroundColor="#FEF3C7"
-          iconColor="#B45309"
-          isLoading={isLoading}
-        />
-        <StatCard
-          icon={Scale}
-          number={summary?.legal ?? 0}
-          name="Legal Services"
-          backgroundColor="#DCFCE7"
-          iconColor="#14532D"
-          isLoading={isLoading}
-        />
+        
+        
       </div>
 
       {/* ── Status breakdown row ── */}
