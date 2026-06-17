@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/NEW LOGO RISE MOTIVE.jpeg";
 import { UserPlus, Menu, X } from "lucide-react";
 import TaskerHeader from "./TaskerHeader";
 

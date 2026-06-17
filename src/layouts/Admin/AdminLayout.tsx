@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from "react-router-dom";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/NEW LOGO RISE MOTIVE.jpeg";
 import {
   Globe,
   FileText,
