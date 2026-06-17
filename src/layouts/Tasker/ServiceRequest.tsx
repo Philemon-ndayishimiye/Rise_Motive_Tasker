@@ -19,7 +19,7 @@ import {
   LayoutGrid,
 } from "lucide-react";
 
-// ── Status badge ────────────────────────────────────────────────────────────
+// ── Status config ────────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<
   ServiceRequest["status"],
@@ -74,13 +74,12 @@ function StatusBadge({ status }: { status: ServiceRequest["status"] }) {
         whiteSpace: "nowrap",
       }}
     >
-      {cfg.icon}
-      {cfg.label}
+      {cfg.icon} {cfg.label}
     </span>
   );
 }
 
-// ── Category tab config ─────────────────────────────────────────────────────
+// ── Category tabs ────────────────────────────────────────────────────────────
 
 type CategoryKey =
   | "all"
@@ -89,6 +88,7 @@ type CategoryKey =
   | "creativeMedia"
   | "webDigital"
   | "legal";
+type StatusFilter = "ALL" | ServiceRequest["status"];
 
 interface TabConfig {
   key: CategoryKey;
@@ -101,14 +101,14 @@ interface TabConfig {
 const TABS: TabConfig[] = [
   {
     key: "all",
-    label: "All Services",
+    label: "All",
     icon: <LayoutGrid size={13} />,
     color: "#1E3A8A",
     bg: "#EFF6FF",
   },
   {
     key: "egov",
-    label: "e-Government",
+    label: "e-Gov",
     icon: <Globe size={13} />,
     color: "#92400E",
     bg: "#FEF9C3",
@@ -122,14 +122,14 @@ const TABS: TabConfig[] = [
   },
   {
     key: "creativeMedia",
-    label: "Creative Media",
+    label: "Creative",
     icon: <Palette size={13} />,
     color: "#9D174D",
     bg: "#FCE7F3",
   },
   {
     key: "webDigital",
-    label: "Web & Digital",
+    label: "Web",
     icon: <Code size={13} />,
     color: "#854D0E",
     bg: "#FEF9C3",
@@ -143,7 +143,16 @@ const TABS: TabConfig[] = [
   },
 ];
 
-// ── Table columns ───────────────────────────────────────────────────────────
+const STATUS_FILTERS: { key: StatusFilter; label: string }[] = [
+  { key: "ALL", label: "All" },
+  { key: "PENDING", label: "Pending" },
+  { key: "ASSIGNED", label: "Assigned" },
+  { key: "IN_PROGRESS", label: "In Progress" },
+  { key: "COMPLETED", label: "Completed" },
+  { key: "CANCELLED", label: "Cancelled" },
+];
+
+// ── Table columns (desktop) ──────────────────────────────────────────────────
 
 const columns: Column<ServiceRequest>[] = [
   {
@@ -286,20 +295,184 @@ const columns: Column<ServiceRequest>[] = [
   },
 ];
 
-// ── Status filter bar ───────────────────────────────────────────────────────
+// ── Mobile card for a single service request ─────────────────────────────────
 
-type StatusFilter = "ALL" | ServiceRequest["status"];
+function MobileServiceCard({ row }: { row: ServiceRequest }) {
+  return (
+    <div
+      style={{
+        background: "#fff",
+        border: "1px solid #DBEAFE",
+        borderRadius: "14px",
+        padding: "14px 16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
+    >
+      {/* Top row: tracking + status */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "6px",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "monospace",
+            fontSize: "12px",
+            fontWeight: 700,
+            color: "#1E3A8A",
+            background: "#EFF6FF",
+            padding: "3px 8px",
+            borderRadius: "6px",
+            border: "1px solid #BFDBFE",
+          }}
+        >
+          {row.trackingCode}
+        </span>
+        <StatusBadge status={row.status} />
+      </div>
 
-const STATUS_FILTERS: { key: StatusFilter; label: string }[] = [
-  { key: "ALL", label: "All" },
-  { key: "PENDING", label: "Pending" },
-  { key: "ASSIGNED", label: "Assigned" },
-  { key: "IN_PROGRESS", label: "In Progress" },
-  { key: "COMPLETED", label: "Completed" },
-  { key: "CANCELLED", label: "Cancelled" },
-];
+      {/* Customer */}
+      <div>
+        <p
+          style={{
+            fontSize: "13px",
+            fontWeight: 700,
+            color: "#111827",
+            margin: 0,
+          }}
+        >
+          {row.customerName}
+        </p>
+        <p style={{ fontSize: "11px", color: "#6B7280", margin: "2px 0 0" }}>
+          {row.customerPhone}
+        </p>
+        {row.customerEmail && (
+          <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "1px 0 0" }}>
+            {row.customerEmail}
+          </p>
+        )}
+      </div>
 
-// ── Main Component ──────────────────────────────────────────────────────────
+      {/* Service + description */}
+      {row.service && (
+        <p
+          style={{
+            fontSize: "12px",
+            fontWeight: 600,
+            color: "#374151",
+            margin: 0,
+          }}
+        >
+          {row.service}
+        </p>
+      )}
+      {row.description && (
+        <p
+          style={{
+            fontSize: "12px",
+            color: "#6B7280",
+            margin: 0,
+            lineHeight: 1.5,
+          }}
+        >
+          {row.description}
+        </p>
+      )}
+
+      {/* Dates + doc */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "6px",
+          borderTop: "1px solid #F3F4F6",
+          paddingTop: "10px",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          {row.preferredDate && (
+            <span style={{ fontSize: "11px", color: "#6B7280" }}>
+              📅{" "}
+              {new Date(row.preferredDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          )}
+          <span style={{ fontSize: "11px", color: "#9CA3AF" }}>
+            Submitted:{" "}
+            {new Date(row.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+        </div>
+        {row.documentUrl && (
+          <a
+            href={row.documentUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              color: "#1E3A8A",
+              background: "#EFF6FF",
+              padding: "4px 12px",
+              borderRadius: "6px",
+              border: "1px solid #BFDBFE",
+              textDecoration: "none",
+            }}
+          >
+            View Doc
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Skeleton loader for mobile cards ─────────────────────────────────────────
+
+function MobileCardSkeleton() {
+  return (
+    <div
+      style={{
+        background: "#fff",
+        border: "1px solid #DBEAFE",
+        borderRadius: "14px",
+        padding: "14px 16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
+    >
+      {[100, 60, 80, 40].map((w, i) => (
+        <div
+          key={i}
+          style={{
+            height: "14px",
+            width: `${w}%`,
+            background: "#E5E7EB",
+            borderRadius: "6px",
+            animation: "pulse 1.5s ease-in-out infinite",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ── Main Component ───────────────────────────────────────────────────────────
 
 export default function TaskerServiceRequests() {
   const { data, isLoading, isError, refetch, isFetching } =
@@ -307,23 +480,13 @@ export default function TaskerServiceRequests() {
   const [activeTab, setActiveTab] = useState<CategoryKey>("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
 
-  // Merge all services into a flat array with category label
-  const allServices: (ServiceRequest & { _category: string })[] = data
+  const allServices: ServiceRequest[] = data
     ? [
-        ...data.services.egov.map((s) => ({ ...s, _category: "e-Government" })),
-        ...data.services.applicationDocs.map((s) => ({
-          ...s,
-          _category: "App & Docs",
-        })),
-        ...data.services.creativeMedia.map((s) => ({
-          ...s,
-          _category: "Creative Media",
-        })),
-        ...data.services.webDigital.map((s) => ({
-          ...s,
-          _category: "Web & Digital",
-        })),
-        ...data.services.legal.map((s) => ({ ...s, _category: "Legal" })),
+        ...data.services.egov,
+        ...data.services.applicationDocs,
+        ...data.services.creativeMedia,
+        ...data.services.webDigital,
+        ...data.services.legal,
       ]
     : [];
 
@@ -349,11 +512,10 @@ export default function TaskerServiceRequests() {
       default:
         base = allServices;
     }
-    if (statusFilter === "ALL") return base;
-    return base.filter((s) => s.status === statusFilter);
+    return statusFilter === "ALL"
+      ? base
+      : base.filter((s) => s.status === statusFilter);
   };
-
-  const tableData = getCategoryData();
 
   const getTabCount = (key: CategoryKey): number => {
     if (!data) return 0;
@@ -373,10 +535,28 @@ export default function TaskerServiceRequests() {
     }
   };
 
+  const tableData = getCategoryData();
+
   return (
     <div className="w-full min-w-0">
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+        @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.5 } }
+
+        .mobile-cards { display: none; }
+        .desktop-table { display: block; }
+
+        @media (max-width: 768px) {
+          .mobile-cards { display: flex; flex-direction: column; gap: 12px; }
+          .desktop-table { display: none; }
+          .page-header { flex-direction: column; align-items: flex-start !important; }
+          .status-filter-row { gap: 6px !important; }
+          .result-count { margin-left: 0 !important; width: 100%; }
+        }
+      `}</style>
+
       {/* ── Header ── */}
-      <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+      <div className="page-header mb-6 flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1
             style={{
@@ -431,7 +611,7 @@ export default function TaskerServiceRequests() {
         </button>
       </div>
 
-      {/* ── Error state ── */}
+      {/* ── Error ── */}
       {isError && (
         <div
           style={{
@@ -455,7 +635,7 @@ export default function TaskerServiceRequests() {
           display: "flex",
           gap: "8px",
           flexWrap: "wrap",
-          marginBottom: "16px",
+          marginBottom: "14px",
         }}
       >
         {TABS.map((tab) => {
@@ -468,8 +648,8 @@ export default function TaskerServiceRequests() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
-                padding: "7px 14px",
+                gap: "5px",
+                padding: "6px 12px",
                 borderRadius: "10px",
                 border: isActive
                   ? `1.5px solid ${tab.color}`
@@ -489,7 +669,7 @@ export default function TaskerServiceRequests() {
                   background: isActive ? tab.color : "#E5E7EB",
                   color: isActive ? "#fff" : "#6B7280",
                   borderRadius: "999px",
-                  padding: "1px 7px",
+                  padding: "1px 6px",
                   fontSize: "10px",
                   fontWeight: 800,
                 }}
@@ -501,8 +681,9 @@ export default function TaskerServiceRequests() {
         })}
       </div>
 
-      {/* ── Status filter row ── */}
+      {/* ── Status filter ── */}
       <div
+        className="status-filter-row"
         style={{
           display: "flex",
           alignItems: "center",
@@ -519,6 +700,7 @@ export default function TaskerServiceRequests() {
             fontSize: "12px",
             color: "#6B7280",
             fontWeight: 600,
+            whiteSpace: "nowrap",
           }}
         >
           <Filter size={12} /> Filter:
@@ -534,7 +716,7 @@ export default function TaskerServiceRequests() {
               key={sf.key}
               onClick={() => setStatusFilter(sf.key)}
               style={{
-                padding: "4px 12px",
+                padding: "4px 11px",
                 borderRadius: "8px",
                 border: isActive
                   ? `1.5px solid ${cfg?.color ?? "#1E3A8A"}`
@@ -552,14 +734,10 @@ export default function TaskerServiceRequests() {
           );
         })}
 
-        {/* Result count */}
         {!isLoading && (
           <span
-            style={{
-              marginLeft: "auto",
-              fontSize: "12px",
-              color: "#9CA3AF",
-            }}
+            className="result-count"
+            style={{ marginLeft: "auto", fontSize: "12px", color: "#9CA3AF" }}
           >
             Showing{" "}
             <strong style={{ color: "#1E3A8A" }}>{tableData.length}</strong>{" "}
@@ -568,16 +746,39 @@ export default function TaskerServiceRequests() {
         )}
       </div>
 
-      {/* ── Table ── */}
-      <Table
-        columns={columns}
-        data={tableData}
-        itemsPerPage={12}
-        isLoading={isLoading}
-      />
+      {/* ── Desktop: Table ── */}
+      <div className="desktop-table">
+        <Table
+          columns={columns}
+          data={tableData}
+          itemsPerPage={12}
+          isLoading={isLoading}
+        />
+      </div>
 
-      {/* Spin keyframe */}
-      <style>{`@keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
+      {/* ── Mobile: Cards ── */}
+      <div className="mobile-cards">
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <MobileCardSkeleton key={i} />
+          ))
+        ) : tableData.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "40px 20px",
+              color: "#9CA3AF",
+              fontSize: "13px",
+            }}
+          >
+            No requests found.
+          </div>
+        ) : (
+          tableData.map((row) => (
+            <MobileServiceCard key={row.trackingCode} row={row} />
+          ))
+        )}
+      </div>
     </div>
   );
 }

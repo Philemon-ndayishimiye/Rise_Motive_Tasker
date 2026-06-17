@@ -25,7 +25,7 @@ import {
   Cell,
 } from "recharts";
 
-// ── Stat Card ───────────────────────────────────────────────────────────────
+// ── Stat Card ────────────────────────────────────────────────────────────────
 
 interface StatCardProps {
   icon: React.ElementType;
@@ -50,10 +50,10 @@ function StatCard({
         background: "#fff",
         border: "1px solid #DBEAFE",
         borderRadius: "14px",
-        padding: "18px",
+        padding: "16px",
         display: "flex",
         alignItems: "flex-start",
-        gap: "14px",
+        gap: "12px",
         transition: "box-shadow 0.2s",
       }}
       onMouseEnter={(e) =>
@@ -66,8 +66,8 @@ function StatCard({
     >
       <div
         style={{
-          width: "44px",
-          height: "44px",
+          width: "42px",
+          height: "42px",
           borderRadius: "12px",
           background: backgroundColor,
           display: "flex",
@@ -93,7 +93,7 @@ function StatCard({
         ) : (
           <p
             style={{
-              fontSize: "26px",
+              fontSize: "24px",
               fontWeight: 800,
               color: "#1E3A8A",
               margin: 0,
@@ -120,7 +120,7 @@ function StatCard({
   );
 }
 
-// ── Status breakdown mini-card ───────────────────────────────────────────────
+// ── Status Card ──────────────────────────────────────────────────────────────
 
 function StatusCard({
   icon: Icon,
@@ -143,7 +143,7 @@ function StatusCard({
         background: bg,
         border: `1px solid ${color}30`,
         borderRadius: "12px",
-        padding: "14px 16px",
+        padding: "12px 14px",
         display: "flex",
         alignItems: "center",
         gap: "10px",
@@ -165,7 +165,7 @@ function StatusCard({
             style={{
               fontSize: "18px",
               fontWeight: 800,
-              color: color,
+              color,
               margin: 0,
               fontFamily: "Playfair Display, serif",
             }}
@@ -176,7 +176,7 @@ function StatusCard({
         <p
           style={{
             fontSize: "10px",
-            color: color,
+            color,
             margin: "2px 0 0",
             fontWeight: 600,
             opacity: 0.8,
@@ -253,19 +253,15 @@ const CustomTooltip = ({
   );
 };
 
-// ── Pie custom label ─────────────────────────────────────────────────────────
-
 const PIE_COLORS = ["#1E3A8A", "#F59E0B", "#EC4899", "#10B981", "#8B5CF6"];
 
 // ── Main Dashboard ───────────────────────────────────────────────────────────
 
 export default function TaskerDashboard() {
   const { data, isLoading, isError } = useGetMyServicesQuery();
-
   const summary = data?.summary;
   const services = data?.services;
 
-  // Build pie chart data from summary
   const pieData = summary
     ? [
         { name: "e-Gov", value: summary.egov },
@@ -276,17 +272,20 @@ export default function TaskerDashboard() {
       ].filter((d) => d.value > 0)
     : [];
 
-  // Build bar/area data from all services — group by status
-  const buildStatusChart = () => {
+  const getAllServices = () => {
     if (!services) return [];
-    const all = [
+    return [
       ...services.egov,
       ...services.applicationDocs,
       ...services.creativeMedia,
       ...services.webDigital,
       ...services.legal,
     ];
-    const statusCounts: Record<string, number> = {
+  };
+
+  const buildStatusChart = () => {
+    const all = getAllServices();
+    const counts: Record<string, number> = {
       PENDING: 0,
       ASSIGNED: 0,
       IN_PROGRESS: 0,
@@ -294,57 +293,110 @@ export default function TaskerDashboard() {
       CANCELLED: 0,
     };
     all.forEach((s) => {
-      if (s.status in statusCounts) statusCounts[s.status]++;
+      if (s.status in counts) counts[s.status]++;
     });
     return [
-      { status: "Pending", count: statusCounts.PENDING },
-      { status: "Assigned", count: statusCounts.ASSIGNED },
-      { status: "In Progress", count: statusCounts.IN_PROGRESS },
-      { status: "Completed", count: statusCounts.COMPLETED },
-      { status: "Cancelled", count: statusCounts.CANCELLED },
+      { status: "Pending", count: counts.PENDING },
+      { status: "Assigned", count: counts.ASSIGNED },
+      { status: "In Progress", count: counts.IN_PROGRESS },
+      { status: "Completed", count: counts.COMPLETED },
+      { status: "Cancelled", count: counts.CANCELLED },
     ];
   };
+
+  const countStatus = (status: string) =>
+    getAllServices().filter((s) => s.status === status).length;
 
   const statusChart = buildStatusChart();
 
-  // Count statuses for status cards
-  const countStatus = (status: string) => {
-    if (!services) return 0;
-    const all = [
-      ...services.egov,
-      ...services.applicationDocs,
-      ...services.creativeMedia,
-      ...services.webDigital,
-      ...services.legal,
-    ];
-    return all.filter((s) => s.status === status).length;
-  };
-
   return (
-    <div>
+    <div style={{ maxWidth: "1200px" }}>
       <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .stat-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 14px;
+          margin-bottom: 20px;
+        }
+
+        .status-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+
+        .charts-row {
+          display: grid;
+          grid-template-columns: 1fr 260px;
+          gap: 20px;
+          align-items: start;
+        }
+
+        .chart-card {
+          background: #fff;
+          border: 1px solid #E5E7EB;
+          border-radius: 16px;
+          padding: 20px;
+          min-width: 0;
+        }
+
+        .pie-card {
+          background: #fff;
+          border: 1px solid #E5E7EB;
+          border-radius: 16px;
+          padding: 20px;
+        }
+
+        /* Tablet: 2-col pie stacks under area chart */
+        @media (max-width: 768px) {
+          .charts-row {
+            grid-template-columns: 1fr;
+          }
+          .pie-card {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0 20px;
+            align-items: start;
+          }
+          .pie-titles { grid-column: 1 / -1; }
+        }
+
+        /* Mobile: tighten padding */
+        @media (max-width: 480px) {
+          .stat-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+          }
+          .status-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .chart-card, .pie-card {
+            padding: 14px;
+          }
+          .pie-card {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
 
-      {/* ── Page title ── */}
+      {/* Page title */}
       <h1
         style={{
           fontFamily: "Playfair Display, serif",
           color: "#1E3A8A",
           fontSize: "20px",
           fontWeight: 800,
-          paddingTop: "20px",
-          paddingBottom: "20px",
+          padding: "20px 0",
           margin: 0,
         }}
       >
         Dashboard Overview
       </h1>
 
-      {/* ── Error banner ── */}
+      {/* Error banner */}
       {isError && (
         <div
           style={{
@@ -366,15 +418,8 @@ export default function TaskerDashboard() {
         </div>
       )}
 
-      {/* ── Category stat cards ── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
-          marginBottom: "24px",
-        }}
-      >
+      {/* Category stat cards */}
+      <div className="stat-grid">
         <StatCard
           icon={TrendingUp}
           number={summary?.totalAssigned ?? 0}
@@ -425,15 +470,8 @@ export default function TaskerDashboard() {
         />
       </div>
 
-      {/* ── Status breakdown row ── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
-          gap: "12px",
-          marginBottom: "24px",
-        }}
-      >
+      {/* Status breakdown */}
+      <div className="status-grid">
         <StatusCard
           icon={Clock}
           label="Pending"
@@ -476,26 +514,11 @@ export default function TaskerDashboard() {
         />
       </div>
 
-      {/* ── Charts row ── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr auto",
-          gap: "20px",
-          alignItems: "start",
-        }}
-      >
-        {/* Status area chart */}
-        <div
-          style={{
-            background: "#fff",
-            border: "1px solid #E5E7EB",
-            borderRadius: "16px",
-            padding: "24px",
-            minWidth: 0,
-          }}
-        >
-          <div style={{ marginBottom: "20px" }}>
+      {/* Charts row */}
+      <div className="charts-row">
+        {/* Area chart */}
+        <div className="chart-card">
+          <div style={{ marginBottom: "16px" }}>
             <h2
               style={{
                 fontFamily: "Playfair Display, serif",
@@ -517,7 +540,7 @@ export default function TaskerDashboard() {
           {isLoading ? (
             <div
               style={{
-                height: "240px",
+                height: "220px",
                 background: "#F9FAFB",
                 borderRadius: "12px",
                 display: "flex",
@@ -532,7 +555,7 @@ export default function TaskerDashboard() {
           ) : statusChart.every((d) => d.count === 0) ? (
             <div
               style={{
-                height: "240px",
+                height: "220px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -546,7 +569,7 @@ export default function TaskerDashboard() {
               No service data yet
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
+            <ResponsiveContainer width="100%" height={220}>
               <AreaChart
                 data={statusChart}
                 margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
@@ -601,36 +624,32 @@ export default function TaskerDashboard() {
           )}
         </div>
 
-        {/* Pie chart — category breakdown */}
-        <div
-          style={{
-            background: "#fff",
-            border: "1px solid #E5E7EB",
-            borderRadius: "16px",
-            padding: "24px",
-            minWidth: "240px",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "Playfair Display, serif",
-              color: "#1E3A8A",
-              fontSize: "15px",
-              fontWeight: 700,
-              margin: "0 0 4px",
-            }}
-          >
-            By Category
-          </h2>
-          <p style={{ fontSize: "11px", color: "#9CA3AF", margin: "0 0 16px" }}>
-            Share of each service type
-          </p>
+        {/* Pie chart */}
+        <div className="pie-card">
+          <div className="pie-titles">
+            <h2
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#1E3A8A",
+                fontSize: "15px",
+                fontWeight: 700,
+                margin: "0 0 4px",
+              }}
+            >
+              By Category
+            </h2>
+            <p
+              style={{ fontSize: "11px", color: "#9CA3AF", margin: "0 0 14px" }}
+            >
+              Share of each service type
+            </p>
+          </div>
 
           {isLoading ? (
             <div
               style={{
-                width: "160px",
-                height: "160px",
+                width: "150px",
+                height: "150px",
                 borderRadius: "50%",
                 background: "#F3F4F6",
                 animation: "pulse 1.5s ease-in-out infinite",
@@ -640,42 +659,42 @@ export default function TaskerDashboard() {
           ) : pieData.length === 0 ? (
             <div
               style={{
-                width: "160px",
-                height: "160px",
+                height: "150px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#9CA3AF",
                 fontSize: "12px",
-                margin: "0 auto",
               }}
             >
               No data
             </div>
           ) : (
             <>
-              <PieChart width={180} height={160}>
-                <Pie
-                  data={pieData}
-                  cx={90}
-                  cy={80}
-                  innerRadius={45}
-                  outerRadius={75}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {pieData.map((_, index) => (
-                    <Cell
-                      key={index}
-                      fill={PIE_COLORS[index % PIE_COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value, name) => [value, name]}
-                  contentStyle={{ borderRadius: "10px", fontSize: "12px" }}
-                />
-              </PieChart>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <PieChart width={170} height={150}>
+                  <Pie
+                    data={pieData}
+                    cx={85}
+                    cy={75}
+                    innerRadius={42}
+                    outerRadius={68}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {pieData.map((_, index) => (
+                      <Cell
+                        key={index}
+                        fill={PIE_COLORS[index % PIE_COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name) => [value, name]}
+                    contentStyle={{ borderRadius: "10px", fontSize: "12px" }}
+                  />
+                </PieChart>
+              </div>
 
               {/* Legend */}
               <div
@@ -683,7 +702,7 @@ export default function TaskerDashboard() {
                   display: "flex",
                   flexDirection: "column",
                   gap: "6px",
-                  marginTop: "12px",
+                  marginTop: "10px",
                 }}
               >
                 {pieData.map((entry, i) => (
