@@ -1,16 +1,16 @@
 import { Outlet, NavLink } from "react-router-dom";
 import logo from "../assets/NEW LOGO RISE MOTIVE.jpeg";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { User, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Footer from "@/components/ui/Footer";
 
 const RootLayout = () => {
-  const navigate = useNavigate();
-  const handleLoginClick = () => {
-    setMobileOpen(false);
-    navigate("/login");
-  };
+  //const navigate = useNavigate();
+  // const handleLoginClick = () => {
+  //   setMobileOpen(false);
+  //   navigate("/login");
+  // };
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -61,9 +61,9 @@ const RootLayout = () => {
         </div>
 
         {/* MOBILE NAV DROPDOWN */}
-        {mobileOpen && (
+        {/* {mobileOpen && (
           <div className="md:hidden border-t border-blue-100 bg-white px-6 pb-4 flex flex-col gap-1 animate-in slide-in-from-top-2 duration-200">
-            {/* Mobile Portal Login */}
+            
             <button
               onClick={handleLoginClick}
               className="mt-2 flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-[#1E3A8A] border border-blue-300 cursor-pointer transition rounded-xl hover:bg-blue-50  w-full font-family-playfair"
@@ -72,7 +72,7 @@ const RootLayout = () => {
               Taskers Portal
             </button>
           </div>
-        )}
+        )} */}
       </header>
 
       {/* MAIN CONTENT */}
