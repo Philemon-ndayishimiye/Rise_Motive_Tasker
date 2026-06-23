@@ -30,7 +30,38 @@ import MediaInformation from "@/layouts/Media/MediaInformtion";
 import MediaProduct from "@/layouts/Media/MediaProduct";
 import MediaSettings from "@/layouts/Media/MediaSettings";
 import MediaProfile from "@/layouts/Media/MediaProfile";
+import StaffMemberDashboard from "@/layouts/RM-Staff-Member/StaffMemberDashboard";
+import StaffMemberInformation from "@/layouts/RM-Staff-Member/StaffMemberInformtion";
+import StaffMemberLayout from "@/layouts/RM-Staff-Member/StaffMemberLayout";
+import StaffMemberProduct from "@/layouts/RM-Staff-Member/StaffMemberProduct";
+import StaffMemberProfile from "@/layouts/RM-Staff-Member/StaffMemberProfile";
+import StaffMemberSettings from "@/layouts/RM-Staff-Member/StaffMemberSettings";
+import StaffServiceRequests from "@/layouts/RM-Staff-Member/StaffMemberServiceRequest";
+import RMStoreDashboard from "@/layouts/Senior-RMT-Store/RMStoreDashboard";
+import RMStoreProduct from "@/layouts/Senior-RMT-Store/RMStoreProduct";
+import RMStoreSettings from "@/layouts/Senior-RMT-Store/RMStoreSettings";
+import RMStoreServiceRequests from "@/layouts/Senior-RMT-Store/RMStoreServiceRequest";
+import RMStoreLayout from "@/layouts/Senior-RMT-Store/RMStoreLayout";
+import RMStoreProfile from "@/layouts/Senior-RMT-Store/RMStoreProfile";
+import RMStoreCyberDashboard from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberDashboard";
+import RMStoreCyberLayout from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberLayout";
+import RMStoreCyberProduct from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberProduct";
+import RMStoreCyberProfile from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberProfile";
+import RMStoreCyberServiceRequests from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberServiceRequest";
+import RMStoreCyberSettings from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberSettings";
+import RMCyberDashboard from "@/layouts/Senior-RMT-Cyber/RMCyberDashboard";
+import RMCyberLayout from "@/layouts/Senior-RMT-Cyber/RMCyberLayout";
+import RMCyberProfile from "@/layouts/Senior-RMT-Cyber/RMCyberProfile";
+import RMCyberServiceRequests from "@/layouts/Senior-RMT-Cyber/RMCyberServiceRequest";
+import RMCyberSettings from "@/layouts/Senior-RMT-Cyber/RMCyberSettings";
+import RMJuniorDashboard from "@/layouts/RM-Junior/RMJuniorDashboard";
+import RMJuniorLayout from "@/layouts/RM-Junior/RMJuniorLayout";
+import RMJuniorProfile from "@/layouts/RM-Junior/RMJuniorProfile";
+import RMJuniorServiceRequests from "@/layouts/RM-Junior/RMJuniorServiceRequest";
+import RMJuniorSettings from "@/layouts/RM-Junior/RMJuniorSettings";
 
+// staff members
+// RM store
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -76,6 +107,58 @@ const AppRouter = () => {
           <Route path="products" element={<MediaProduct />} />
           <Route path="settings" element={<MediaSettings />} />
           <Route path="profile" element={<MediaProfile />} />
+        </Route>
+
+        {/* staff members */}
+
+        <Route path="/staff" element={<StaffMemberLayout />}>
+          <Route path="dashboard" element={<StaffMemberDashboard />} />
+          <Route path="info" element={<StaffMemberInformation />} />
+          <Route path="products" element={<StaffMemberProduct />} />
+          <Route path="settings" element={<StaffMemberSettings />} />
+          <Route path="profile" element={<StaffMemberProfile />} />
+          <Route path="servicerequest" element={<StaffServiceRequests />} />
+        </Route>
+
+        {/** rmstore */}
+
+        <Route path="/rmstore" element={<RMStoreLayout />}>
+          <Route path="dashboard" element={<RMStoreDashboard />} />
+          <Route path="products" element={<RMStoreProduct />} />
+          <Route path="settings" element={<RMStoreSettings />} />
+          <Route path="profile" element={<RMStoreProfile />} />
+          <Route path="servicerequest" element={<RMStoreServiceRequests />} />
+        </Route>
+
+        {/** RMStoreCyber */}
+
+        <Route path="/rmstoreCyber" element={<RMStoreCyberLayout />}>
+          <Route path="dashboard" element={<RMStoreCyberDashboard />} />
+          <Route path="products" element={<RMStoreCyberProduct />} />
+          <Route path="settings" element={<RMStoreCyberSettings />} />
+          <Route path="profile" element={<RMStoreCyberProfile />} />
+          <Route
+            path="servicerequest"
+            element={<RMStoreCyberServiceRequests />}
+          />
+        </Route>
+
+        {/** rmcyber */}
+
+        <Route path="/rmcyber" element={<RMCyberLayout />}>
+          <Route path="dashboard" element={<RMCyberDashboard />} />
+          <Route path="settings" element={<RMCyberSettings />} />
+          <Route path="profile" element={<RMCyberProfile />} />
+          <Route path="servicerequest" element={<RMJuniorServiceRequests />} />
+        </Route>
+
+        {/** rmjunior */}
+
+        <Route path="/rmjunior" element={<RMJuniorLayout />}>
+          <Route path="dashboard" element={<RMJuniorDashboard />} />
+          <Route path="settings" element={<RMJuniorSettings />} />
+          <Route path="profile" element={<RMJuniorProfile />} />
+          <Route path="servicerequest" element={<RMCyberServiceRequests />} />
         </Route>
       </Routes>
     </BrowserRouter>

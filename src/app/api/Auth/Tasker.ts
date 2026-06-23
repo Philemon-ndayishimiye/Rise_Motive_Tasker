@@ -14,6 +14,7 @@ export interface ServiceRequest {
   tasker?: string;
   createdAt: string;
   updatedAt: string;
+   category?: string;
 }
 
 // Add this interface at the top
@@ -33,6 +34,7 @@ export interface TaskerDashboardResponse {
     creativeMedia: ServiceRequest[];
     webDigital: ServiceRequest[];
     legal: ServiceRequest[];
+    newService: ServiceRequest[];
   };
   summary: {
     totalAssigned: number;
@@ -41,6 +43,7 @@ export interface TaskerDashboardResponse {
     creativeMedia: number;
     webDigital: number;
     legal: number;
+    newService: number;
   };
 }
 

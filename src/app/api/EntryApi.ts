@@ -31,6 +31,7 @@ export const apiSlice = createApi({
     "LegalService",
     "CreativeMediaService",
     "Course",
+    "NewServiceRequest"
   ],
   endpoints: () => ({}),
 });

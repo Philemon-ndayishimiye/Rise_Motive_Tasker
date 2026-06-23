@@ -5,9 +5,19 @@ export interface Product {
   name: string;
   description: string;
   price: string;
+  pricePerUnit?: string;
+  priceWholesale?: string;
+  deliveryRetail?: string;
+  deliveryWholesale?: string;
   category: string;
   imageUrl: string;
   inStock: boolean;
+  taskerId?: number;
+  tasker?: {
+    id: number;
+    name: string;
+    papeterieName?: string;
+  };
   createdAt?: string;
   updatedAt?: string;
 }
@@ -22,9 +32,14 @@ export interface UpdateProductRequest {
   name?: string;
   description?: string;
   price?: string;
+  pricePerUnit?: string;
+  priceWholesale?: string;
+  deliveryRetail?: string;
+  deliveryWholesale?: string;
   category?: string;
   imageUrl?: string;
   inStock?: boolean;
+  taskerId?: number;
 }
 
 export interface MessageResponse {
@@ -56,14 +71,28 @@ export const productApi = apiSlice.injectEndpoints({
     }),
 
     //  JSON update (no file upload on edit)
-    updateProduct: builder.mutation<Product, UpdateProductRequest>({
-      query: ({ id, ...data }) => ({
-        url: `products/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: (_result, _error, { id }) => [
-        { type: "Product", id },
+    updateProduct: builder.mutation<
+      Product,
+      UpdateProductRequest | { id: number; formData: FormData }
+    >({
+      query: (arg) => {
+        if ("formData" in arg) {
+          return {
+            url: `products/${arg.id}`,
+            method: "PUT",
+            body: arg.formData,
+            formData: true,
+          };
+        }
+        const { id, ...data } = arg as UpdateProductRequest;
+        return {
+          url: `products/${id}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+      invalidatesTags: (_result, _error, arg) => [
+        { type: "Product", id: arg.id },
         "Product",
       ],
     }),

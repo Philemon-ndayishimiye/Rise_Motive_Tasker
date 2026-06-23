@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Briefcase, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useLoginMutation } from "../app/api/Auth/auth";
 
+interface TaskerAdmin {
+  role: "TASKER" | "MEDIA";
+  taskerRole?: string;
+  // add other fields your admin object has (id, email, name, etc.)
+}
+
 export default function TaskerLoginPage() {
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
@@ -35,8 +41,32 @@ export default function TaskerLoginPage() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(admin));
 
+      // if (admin.role === "TASKER") {
+      //   navigate("/tasker/dashboard");
+      // } else if (admin.role === "MEDIA") {
+      //   navigate("/media/dashboard");
+      // }
+
       if (admin.role === "TASKER") {
-        navigate("/tasker/dashboard");
+        // Navigate based on taskerRole stored in profile
+        // We use taskerRole from the login response if available
+        const taskerRole = (admin as TaskerAdmin).taskerRole as
+          | string
+          | undefined;
+        if (taskerRole === "RM_STAFF_MEMBER") {
+          navigate("/staff/dashboard");
+        } else if (taskerRole === "SENIOR_RMT_STORE") {
+          navigate("/rmstore/dashboard");
+        } else if (taskerRole === "SENIOR_RMT_STORE_AND_CYBER") {
+          navigate("/rmstoreCyber/dashboard");
+        } else if (taskerRole === "SENIOR_RMT_CYBER") {
+          navigate("/rmcyber/dashboard");
+        } else if (taskerRole === "RM_TASKER_JUNIOR") {
+          navigate("/rmjunior/dashboard");
+        } else {
+          // fallback — no role set yet
+          navigate("/tasker/dashboard");
+        }
       } else if (admin.role === "MEDIA") {
         navigate("/media/dashboard");
       }
