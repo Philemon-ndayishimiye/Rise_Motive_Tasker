@@ -151,7 +151,7 @@ function ProductModal({
   const [form, setForm] = useState<ProductFormData>({
     name: initial?.name ?? "",
     description: initial?.description ?? "",
-    price: initial?.price ?? "",
+    price: initial?.pricePerUnit ?? "",
     pricePerUnit: initial?.pricePerUnit ?? "",
     priceWholesale: initial?.priceWholesale ?? "",
     deliveryRetail: initial?.deliveryRetail ?? "",
@@ -605,7 +605,7 @@ export default function RMStoreProduct() {
       label: "Price",
       render: (row) => (
         <span style={{ fontWeight: 700, fontSize: 13, color: "#1E3A8A" }}>
-          {row.price ? `${Number(row.price).toLocaleString()} RWF` : "—"}
+          {row.pricePerUnit ? `${Number(row.pricePerUnit).toLocaleString()} RWF` : "—"}
         </span>
       ),
     },

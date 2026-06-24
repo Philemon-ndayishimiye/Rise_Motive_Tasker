@@ -13,7 +13,7 @@ import OrderedProduct from "@/layouts/Admin/OrderedProduct";
 import Notifications from "@/layouts/Admin/Notifications";
 import Settings from "@/layouts/Admin/Settings";
 import ProfilePage from "@/layouts/Admin/ProfilePage";
-import ViewProduct from "@/layouts/Admin/ViewProduct";
+//import ViewProduct from "@/layouts/Admin/ViewProduct";
 //import Information from "@/layouts/Admin/Information";
 import Login from "@/pages/Login";
 import InfoPostAdmin from "@/layouts/Admin/Information";
@@ -59,6 +59,7 @@ import RMJuniorLayout from "@/layouts/RM-Junior/RMJuniorLayout";
 import RMJuniorProfile from "@/layouts/RM-Junior/RMJuniorProfile";
 import RMJuniorServiceRequests from "@/layouts/RM-Junior/RMJuniorServiceRequest";
 import RMJuniorSettings from "@/layouts/RM-Junior/RMJuniorSettings";
+import RMStoreCyberOrderedProduct from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberOrderedProduct";
 
 // staff members
 // RM store
@@ -84,7 +85,7 @@ const AppRouter = () => {
           <Route path="notification" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="products" element={<ViewProduct />} />
+          {/* <Route path="products" element={<ViewProduct />} /> */}
           <Route path="info" element={<InfoPostAdmin />} />
           <Route path="spotservice" element={<SpotService />} />
           <Route path="course" element={<Courses />} />
@@ -137,6 +138,7 @@ const AppRouter = () => {
           <Route path="products" element={<RMStoreCyberProduct />} />
           <Route path="settings" element={<RMStoreCyberSettings />} />
           <Route path="profile" element={<RMStoreCyberProfile />} />
+          <Route path="order" element={<RMStoreCyberOrderedProduct />} />
           <Route
             path="servicerequest"
             element={<RMStoreCyberServiceRequests />}

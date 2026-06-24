@@ -147,7 +147,7 @@ function ProductModal({
   const [form, setForm] = useState<ProductFormData>({
     name: initial?.name ?? "",
     description: initial?.description ?? "",
-    price: initial?.price ?? "",
+    price: initial?.pricePerUnit ?? "",
     category: initial?.category ?? "",
     inStock: initial?.inStock ?? true,
     imageFile: null,
@@ -471,7 +471,6 @@ export default function MediaProduct() {
         id: editRow.id,
         name: form.name,
         description: form.description,
-        price: form.price,
         category: form.category,
         inStock: form.inStock,
       }).unwrap();
@@ -531,7 +530,7 @@ export default function MediaProduct() {
       label: "Price",
       render: (row) => (
         <span style={{ fontWeight: 700, fontSize: 13, color: "#1E3A8A" }}>
-          {row.price ? `${Number(row.price).toLocaleString()} RWF` : "—"}
+          {row.pricePerUnit ? `${Number(row.pricePerUnit).toLocaleString()} RWF` : "—"}
         </span>
       ),
     },

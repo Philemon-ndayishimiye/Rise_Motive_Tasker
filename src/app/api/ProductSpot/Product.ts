@@ -4,7 +4,6 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  price: string;
   pricePerUnit?: string;
   priceWholesale?: string;
   deliveryRetail?: string;
@@ -31,7 +30,6 @@ export interface UpdateProductRequest {
   id: number;
   name?: string;
   description?: string;
-  price?: string;
   pricePerUnit?: string;
   priceWholesale?: string;
   deliveryRetail?: string;
@@ -49,7 +47,11 @@ export interface MessageResponse {
 export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query<ProductsResponse, void>({
-      query: () => "products",
+      query: () => {
+        const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+        const taskerId = user?.id;
+        return taskerId ? `products?taskerId=${taskerId}` : "products";
+      },
       providesTags: ["Product"],
     }),
 

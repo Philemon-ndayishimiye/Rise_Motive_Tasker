@@ -53,6 +53,13 @@ export default function RMStoreCyberLayout() {
             </NavLink>
           </li>
 
+          <li>
+            <NavLink to="/RMStoreCyber/order" className={navLinkClass}>
+              <Briefcase size={15} />
+              <h1 className="text-[14.5px]">Ordered Product</h1>
+            </NavLink>
+          </li>
+
           {/* <li>
             <NavLink to="/staff/info" className={navLinkClass}>
               <CircleAlert size={15} />

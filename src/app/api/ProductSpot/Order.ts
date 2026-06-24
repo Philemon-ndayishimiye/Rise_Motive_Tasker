@@ -3,19 +3,25 @@ import type { Product } from "./Product";
 
 export interface Order {
   id: number;
+  trackingCode: string;
+  cartId?: string;
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
-  address: string;
+  customerEmail?: string;
+  papeterieName?: string;
   quantity: number;
-  paymentMethod: string;
-  note: string;
-  productId: number;
-  product: Product;
+  paymentMethod?: string;
+  note?: string;
   status: string;
-  trackingCode: string;
   createdAt: string;
   updatedAt: string;
+  productId: number;
+  totalPrice: number;
+  product: Product;
+  province?: string;
+  district?: string;
+  sector?: string;
+  cell?: string;
 }
 
 export interface OrdersResponse {
@@ -26,17 +32,16 @@ export interface OrdersResponse {
 export interface CreateOrderRequest {
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
-  address: string;
+  customerEmail?: string;
+  papeterieName?: string;
   quantity: number;
-  paymentMethod: string;
-  note: string;
+  paymentMethod?: string;
+  note?: string;
   productId: number;
-}
-
-export interface UpdateOrderRequest extends Partial<CreateOrderRequest> {
-  id: number;
-  status: string;
+  province?: string;
+  district?: string;
+  sector?: string;
+  cell?: string;
 }
 
 export interface UpdateOrderStatusRequest {
@@ -55,6 +60,12 @@ export const orderApi = apiSlice.injectEndpoints({
       providesTags: ["Order"],
     }),
 
+    // ── NEW: papeterie orders for logged-in tasker ──
+    getMyPaperieOrders: builder.query<OrdersResponse, void>({
+      query: () => "orders/my-papeterie",
+      providesTags: ["Order"],
+    }),
+
     getOrderById: builder.query<Order, number>({
       query: (id) => `orders/${id}`,
       providesTags: (_result, _error, id) => [{ type: "Order", id }],
@@ -69,7 +80,6 @@ export const orderApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Order"],
     }),
 
-    /* UPDATE STATUS */
     updateOrder: builder.mutation<Order, UpdateOrderStatusRequest>({
       query: ({ id, status }) => ({
         url: `orders/${id}/status`,
@@ -94,6 +104,7 @@ export const orderApi = apiSlice.injectEndpoints({
 
 export const {
   useGetAllOrdersQuery,
+  useGetMyPaperieOrdersQuery,
   useGetOrderByIdQuery,
   useCreateOrderMutation,
   useUpdateOrderMutation,
