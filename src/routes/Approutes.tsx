@@ -40,7 +40,7 @@ import StaffServiceRequests from "@/layouts/RM-Staff-Member/StaffMemberServiceRe
 import RMStoreDashboard from "@/layouts/Senior-RMT-Store/RMStoreDashboard";
 import RMStoreProduct from "@/layouts/Senior-RMT-Store/RMStoreProduct";
 import RMStoreSettings from "@/layouts/Senior-RMT-Store/RMStoreSettings";
-import RMStoreServiceRequests from "@/layouts/Senior-RMT-Store/RMStoreServiceRequest";
+//import RMStoreServiceRequests from "@/layouts/Senior-RMT-Store/RMStoreServiceRequest";
 import RMStoreLayout from "@/layouts/Senior-RMT-Store/RMStoreLayout";
 import RMStoreProfile from "@/layouts/Senior-RMT-Store/RMStoreProfile";
 import RMStoreCyberDashboard from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberDashboard";
@@ -60,6 +60,8 @@ import RMJuniorProfile from "@/layouts/RM-Junior/RMJuniorProfile";
 import RMJuniorServiceRequests from "@/layouts/RM-Junior/RMJuniorServiceRequest";
 import RMJuniorSettings from "@/layouts/RM-Junior/RMJuniorSettings";
 import RMStoreCyberOrderedProduct from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberOrderedProduct";
+import RMStoreOrderedProduct from "@/layouts/Senior-RMT-Store/RMStoreOrderedProduct";
+import StaffMemberOrderedProduct from "@/layouts/RM-Staff-Member/StaffMemberOrderedProduct";
 
 // staff members
 // RM store
@@ -119,6 +121,7 @@ const AppRouter = () => {
           <Route path="settings" element={<StaffMemberSettings />} />
           <Route path="profile" element={<StaffMemberProfile />} />
           <Route path="servicerequest" element={<StaffServiceRequests />} />
+          <Route path="order" element={<StaffMemberOrderedProduct />} />
         </Route>
 
         {/** rmstore */}
@@ -128,7 +131,7 @@ const AppRouter = () => {
           <Route path="products" element={<RMStoreProduct />} />
           <Route path="settings" element={<RMStoreSettings />} />
           <Route path="profile" element={<RMStoreProfile />} />
-          <Route path="servicerequest" element={<RMStoreServiceRequests />} />
+          <Route path="order" element={<RMStoreOrderedProduct />} />
         </Route>
 
         {/** RMStoreCyber */}

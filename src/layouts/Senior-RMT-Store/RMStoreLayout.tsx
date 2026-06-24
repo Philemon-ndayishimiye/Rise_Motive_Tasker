@@ -47,9 +47,9 @@ export default function RMStoreLayout() {
 
           {/** servicerequest */}
           <li>
-            <NavLink to="/rmstore/servicerequest" className={navLinkClass}>
+            <NavLink to="/rmstore/order" className={navLinkClass}>
               <Briefcase size={15} />
-              <h1 className="text-[14.5px]">servicerequest</h1>
+              <h1 className="text-[14.5px]">Ordered Product</h1>
             </NavLink>
           </li>
 

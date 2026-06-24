@@ -59,6 +59,13 @@ export default function StaffMemberLayout() {
               <h1 className="text-[14.5px]">View Information</h1>
             </NavLink>
           </li>
+
+          <li>
+            <NavLink to="/staff/order" className={navLinkClass}>
+              <CircleAlert size={15} />
+              <h1 className="text-[14.5px]">Ordered Product</h1>
+            </NavLink>
+          </li>
         </ul>
       </div>
 
