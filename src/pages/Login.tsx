@@ -252,6 +252,18 @@ export default function TaskerLoginPage() {
                 </button>
               </form>
 
+              <p className="text-center text-xs text-gray-400 mt-3 mb-4">
+                Register your Business To be Tasker{" "}
+                <a
+                  href="https://risemotive.rw/apply"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1E3A8A] font-semibold hover:underline"
+                >
+                  Apply Now
+                </a>
+              </p>
+
               <p className="text-center text-xs text-gray-400 mt-6">
                 Having trouble? Contact{" "}
                 <a
