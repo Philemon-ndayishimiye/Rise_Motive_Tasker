@@ -1,3 +1,5 @@
+// RMStoreCyberProduct
+
 import { useState } from "react";
 import { Table } from "../Admin/AdminTable";
 import type { Column } from "../Admin/AdminTable";
@@ -161,13 +163,11 @@ function DeliveryField({
   value,
   onChange,
   placeholder,
-  showUnit = true, // ← new prop, default true
 }: {
   label: string;
   value: string;
   onChange: (val: string) => void;
   placeholder?: string;
-  showUnit?: boolean; // ← new prop
 }) {
   const parsed = parseDelivery(value);
   const [text, setText] = useState(parsed.text);
@@ -175,7 +175,7 @@ function DeliveryField({
 
   const handleText = (val: string) => {
     setText(val);
-    onChange(showUnit ? buildDelivery(val, unit) : val);
+    onChange(buildDelivery(val, unit));
   };
 
   const handleUnit = (val: UnitType) => {
@@ -192,31 +192,29 @@ function DeliveryField({
           onChange={(e) => handleText(e.target.value)}
           placeholder={placeholder ?? "e.g. from 2"}
         />
-        {showUnit && (
-          <select
-            style={{
-              ...inputStyle,
-              width: "auto",
-              minWidth: 110,
-              flex: "none",
-              paddingRight: 8,
-            }}
-            value={unit}
-            onChange={(e) => handleUnit(e.target.value as UnitType)}
-          >
-            {UNIT_TYPES.map((u) => (
-              <option key={u} value={u}>
-                {u.charAt(0) + u.slice(1).toLowerCase()}
-              </option>
-            ))}
-          </select>
-        )}
+        <select
+          style={{
+            ...inputStyle,
+            width: "auto",
+            minWidth: 110,
+            flex: "none",
+            paddingRight: 8,
+          }}
+          value={unit}
+          onChange={(e) => handleUnit(e.target.value as UnitType)}
+        >
+          {UNIT_TYPES.map((u) => (
+            <option key={u} value={u}>
+              {u.charAt(0) + u.slice(1).toLowerCase()}
+            </option>
+          ))}
+        </select>
       </div>
       {text && (
         <p style={{ fontSize: 11, color: "#6B7280", marginTop: 4 }}>
           Preview:{" "}
           <strong style={{ color: "#1E3A8A" }}>
-            {showUnit ? buildDelivery(text, unit) : text}
+            {buildDelivery(text, unit)}
           </strong>
         </p>
       )}
@@ -531,11 +529,10 @@ function ProductModal({
             />
 
             <DeliveryField
-              label="Wholesale Delivery (available)"
+              label="Wholesale Delivery (starts from)"
               value={form.deliveryWholesale}
               onChange={(val) => set("deliveryWholesale", val)}
-              placeholder="Available"
-              showUnit={false}
+              placeholder="e.g. from 1"
             />
           </div>
 
@@ -805,7 +802,7 @@ export default function RMStoreCyberProduct() {
         }}
       >
         <div>
-          <h1 className="font-family-playfair font-bold text-[#1E3A8A] text-[20px]">
+          <h1 className="font-family-playfair font-bold text-blue-800 text-[20px]">
             Products
           </h1>
           <p className="font-family-playfair text-gray-500 text-[13px] mt-1">
@@ -814,6 +811,7 @@ export default function RMStoreCyberProduct() {
           </p>
         </div>
         <button
+          className="bg-blue-800"
           onClick={() => setShowAdd(true)}
           style={{
             display: "inline-flex",
@@ -822,7 +820,6 @@ export default function RMStoreCyberProduct() {
             padding: "9px 18px",
             borderRadius: 10,
             border: "none",
-            background: "#1E3A8A",
             color: "#fff",
             fontSize: 13,
             fontWeight: 700,

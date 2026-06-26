@@ -1,6 +1,13 @@
 import { Outlet, NavLink } from "react-router-dom";
-import logo from "../../assets/NEW LOGO RISE MOTIVE.jpeg";
-import { Box, Briefcase } from "lucide-react";
+import logo from "../../assets/white-logo.jpeg";
+import {
+  Box,
+  Briefcase,
+  Headset,
+  LifeBuoy,
+  Wallet,
+  ClipboardList,
+} from "lucide-react";
 import MediaHeader from "./RMStoreHeader";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -12,7 +19,7 @@ export default function RMStoreLayout() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* ── Sidebar ── */}
-      <div className="w-64 shrink-0 bg-linear-to-b from-blue-300 to-blue-900 font-family-playfair text-white overflow-y-auto overflow-x-hidden">
+      <div className="w-64 shrink-0 bg-blue-800 font-family-playfair text-white overflow-y-auto overflow-x-hidden">
         <div className="pt-2 pl-2">
           <div className="flex items-center gap-3 shrink-0 group">
             <div className="relative">
@@ -24,7 +31,7 @@ export default function RMStoreLayout() {
             </div>
             <NavLink to="/rmstore/dashboard" className="leading-tight">
               <h2 className="font-extrabold text-[17px] tracking-wide text-[#1E3A8A] group-hover:text-blue-500 transition-colors duration-200 pb-2 font-family-playfair">
-                RISEMOTIVE
+                RISE MOTIVE
               </h2>
               <p className="text-[11px] font-medium text-white tracking-wide font-family-playfair">
                 Building Skills. Delivering Solutions
@@ -51,6 +58,37 @@ export default function RMStoreLayout() {
               <Briefcase size={15} />
               <h1 className="text-[14.5px]">Ordered Product</h1>
             </NavLink>
+          </li>
+
+          <li>
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Wallet size={15} />
+              <h1 className="text-[14.5px]">My Earnings</h1>
+            </button>
+          </li>
+
+          <li>
+            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <ClipboardList size={15} />
+              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            </button>
+          </li>
+          <h1 className="text-white text-[15px] font-family-playfair pl-2">
+            support
+          </h1>
+
+          <li>
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Headset size={15} />
+              <h1 className="text-[14.5px]">Messages</h1>
+            </button>
+          </li>
+
+          <li>
+            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <LifeBuoy size={15} />
+              <h1 className="text-[14.5px]">Contact Support</h1>
+            </button>
           </li>
 
           {/* <li>
