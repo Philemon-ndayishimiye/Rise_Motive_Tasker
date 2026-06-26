@@ -660,14 +660,14 @@ export default function StaffServiceRequests() {
         @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.5 } }
 
         .mobile-cards { display: none; }
-        .desktop-table { display: block; }
+.desktop-table { display: block; }
 
-        @media (max-width: 768px) {
-          .mobile-cards { display: flex; flex-direction: column; gap: 12px; }
-          .desktop-table { display: none; }
-          .page-header { flex-direction: column; align-items: flex-start !important; }
-          .status-filter-row { gap: 6px !important; }
-          .result-count { margin-left: 0 !important; width: 100%; }
+@media (max-width: 768px) {
+  .page-header { flex-direction: column; align-items: flex-start !important; }
+  .status-filter-row { gap: 6px !important; }
+  .result-count { margin-left: 0 !important; width: 100%; }
+}
+          .tabs-scroll::-webkit-scrollbar { display: none; }
         }
       `}</style>
 
@@ -745,11 +745,16 @@ export default function StaffServiceRequests() {
 
       {/* ── Category tabs ── */}
       <div
+        className="tabs-scroll"
         style={{
           display: "flex",
           gap: "8px",
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
+          overflowX: "auto",
           marginBottom: "14px",
+          paddingBottom: "6px",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
         }}
       >
         {TABS.map((tab) => {
@@ -859,7 +864,15 @@ export default function StaffServiceRequests() {
       </div>
 
       {/* ── Desktop: Table ── */}
-      <div className="desktop-table">
+      {/* ── Table ── */}
+      <div
+        className="desktop-table"
+        style={{
+          overflowX: "auto",
+          width: "100%",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
         <Table
           columns={columns}
           data={tableData}

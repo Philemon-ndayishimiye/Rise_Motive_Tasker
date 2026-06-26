@@ -800,7 +800,7 @@ export default function StaffMemberProduct() {
         }}
       >
         <div>
-          <h1 className="font-family-playfair font-bold text-[#1E3A8A] text-[20px]">
+          <h1 className="font-family-playfair font-bold text-blue-800 text-[20px]">
             Products
           </h1>
           <p className="font-family-playfair text-gray-500 text-[13px] mt-1">
@@ -809,6 +809,7 @@ export default function StaffMemberProduct() {
           </p>
         </div>
         <button
+         className="bg-blue-800"
           onClick={() => setShowAdd(true)}
           style={{
             display: "inline-flex",
@@ -817,7 +818,6 @@ export default function StaffMemberProduct() {
             padding: "9px 18px",
             borderRadius: 10,
             border: "none",
-            background: "#1E3A8A",
             color: "#fff",
             fontSize: 13,
             fontWeight: 700,

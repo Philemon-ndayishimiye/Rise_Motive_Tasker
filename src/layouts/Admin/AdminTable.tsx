@@ -207,10 +207,11 @@ export function Table<T extends { id: number | string }>({
     <>
       {/* ── Outer card ── */}
       <div
+       className="border border-blue-800"
         style={{
           width: "100%",
           minWidth: 0,
-          border: "1px solid #DBEAFE",
+          
           borderRadius: "8px",
           overflow: "hidden",
           backgroundColor: "#fff",
@@ -237,26 +238,28 @@ export function Table<T extends { id: number | string }>({
             {/* ── Head sticky ── */}
             <thead>
               <tr
+                className="bg-blue-800"
                 style={{
                  // position: "sticky",
                   top: 0,
                   zIndex: 5,
-                  backgroundColor: "#EFF6FF",
+                  
                   borderBottom: "1px solid #BFDBFE",
                 }}
               >
                 {columns.map((col) => (
                   <th
+                    className="bg-blue-800"
                     key={String(col.key)}
                     style={{
                       padding: "7px 10px",
                       textAlign: "left",
                       fontSize: "12px",
                       fontWeight: 600,
-                      color: "#1E3A8A",
+                      color: "#ffffff",
                       letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      backgroundColor: "#EFF6FF",
+                      
                       width: col.width ?? "auto",
                       whiteSpace: "nowrap",
                     }}
@@ -266,15 +269,16 @@ export function Table<T extends { id: number | string }>({
                 ))}
                 {showActions && (
                   <th
+                    className="bg-blue-800"
                     style={{
                       padding: "11px 16px",
                       textAlign: "right",
                       fontSize: "12px",
                       fontWeight: 600,
-                      color: "#1E3A8A",
+                      color: "#ffffff",
                       letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      backgroundColor: "#EFF6FF",
+                      
                       whiteSpace: "nowrap",
                     }}
                   >

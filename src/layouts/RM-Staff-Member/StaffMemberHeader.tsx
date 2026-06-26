@@ -60,9 +60,9 @@ export default function StaffMemberHeader() {
           {/* Avatar */}
           <div
             onClick={() => setOpen(!open)}
-            className="w-8 h-8 rounded-full cursor-pointer overflow-hidden"
+            className="w-8 h-8 rounded-full cursor-pointer overflow-hidden bg-blue-800"
             style={{
-              background: "#1E3A8A",
+             
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

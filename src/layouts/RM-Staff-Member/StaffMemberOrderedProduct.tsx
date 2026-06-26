@@ -742,7 +742,7 @@ export default function StaffMemberOrderedProduct() {
     <div className="w-full min-w-0">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="font-bold text-[#1E3A8A] text-[20px]">
+        <h1 className="font-bold text-blue-800 font-family-playfair text-[20px]">
           My Papeterie Orders
         </h1>
         <p className="text-gray-500 text-[13px] mt-1">
