@@ -136,7 +136,7 @@ export default function StaffMemberLayout() {
             </button>
           </li>
           <h1 className="text-white text-[15px] font-family-playfair pl-2">
-            support
+            Support
           </h1>
 
           <li>
