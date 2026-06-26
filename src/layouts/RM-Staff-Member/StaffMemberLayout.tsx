@@ -62,7 +62,7 @@ export default function StaffMemberLayout() {
               onClick={() => setSidebarOpen(false)}
             >
               <h2 className="font-extrabold text-[18px] tracking-wide transition-colors duration-200 pb-2 font-family-playfair text-white">
-                RISEMOTIVE
+                RISE MOTIVE
               </h2>
               <p className="text-[11px] font-bold text-white tracking-wide font-family-playfair">
                 Building Skills. Delivering Solutions
@@ -92,7 +92,7 @@ export default function StaffMemberLayout() {
               onClick={() => setSidebarOpen(false)}
             >
               <Briefcase size={15} />
-              <h1 className="text-[14.5px]">servicerequest</h1>
+              <h1 className="text-[14.5px]"> Request services</h1>
             </NavLink>
           </li>
 
