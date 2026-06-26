@@ -8,6 +8,10 @@ import {
   ShoppingBag,
   Menu,
   X,
+  Headset,
+  LifeBuoy,
+  Wallet,
+  ClipboardList,
 } from "lucide-react";
 import MediaHeader from "./StaffMemberHeader";
 
@@ -116,6 +120,37 @@ export default function StaffMemberLayout() {
               <ShoppingBag size={15} />
               <h1 className="text-[14.5px]">Ordered Product</h1>
             </NavLink>
+          </li>
+
+          <li>
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Wallet size={15} />
+              <h1 className="text-[14.5px]">My Earnings</h1>
+            </button>
+          </li>
+
+          <li>
+            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <ClipboardList size={15} />
+              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            </button>
+          </li>
+          <h1 className="text-white text-[15px] font-family-playfair pl-2">
+            support
+          </h1>
+
+          <li>
+            <button  className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Headset size={15} />
+              <h1 className="text-[14.5px]">Call Center</h1>
+            </button>
+          </li>
+
+          <li>
+            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <LifeBuoy size={15} />
+              <h1 className="text-[14.5px]">Contact Support</h1>
+            </button>
           </li>
         </ul>
       </div>

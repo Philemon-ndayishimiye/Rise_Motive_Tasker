@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from "react-router-dom";
-import logo from "../../assets/NEW LOGO RISE MOTIVE.jpeg";
+import logo from "../../assets/white-logo.jpeg";
 import { Briefcase } from "lucide-react";
 import MediaHeader from "./RMCyberHeader";
 
@@ -12,7 +12,7 @@ export default function RMCyberLayout() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* ── Sidebar ── */}
-      <div className="w-64 shrink-0 bg-linear-to-b from-blue-300 to-blue-900 font-family-playfair text-white overflow-y-auto overflow-x-hidden">
+      <div className="w-64 shrink-0 bg-blue-800 font-family-playfair text-white overflow-y-auto overflow-x-hidden">
         <div className="pt-2 pl-2">
           <div className="flex items-center gap-3 shrink-0 group">
             <div className="relative">
@@ -24,7 +24,7 @@ export default function RMCyberLayout() {
             </div>
             <NavLink to="/rmcyber/dashboard" className="leading-tight">
               <h2 className="font-extrabold text-[17px] tracking-wide text-[#1E3A8A] group-hover:text-blue-500 transition-colors duration-200 pb-2 font-family-playfair">
-                RISEMOTIVE
+                RISE MOTIVE
               </h2>
               <p className="text-[11px] font-medium text-white tracking-wide font-family-playfair">
                 Building Skills. Delivering Solutions

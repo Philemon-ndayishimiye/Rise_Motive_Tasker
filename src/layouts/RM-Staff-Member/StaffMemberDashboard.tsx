@@ -41,37 +41,31 @@ const statusData = [
 ];
 
 const categoryData = [
-  { name: "e-Government", value: 3, color: "#3B82F6" },
-  { name: "App & Docs", value: 5, color: "#F59E0B" },
-  { name: "Creative & Media", value: 1, color: "#EC4899" },
-  { name: "Web & Digital", value: 0, color: "#8B5CF6" },
-  { name: "Legal", value: 0, color: "#10B981" },
+  { name: "Requested Service", value: 3, color: "#3B82F6" },
+  { name: "Ordered Product", value: 5, color: "#F59E0B" },
+  { name: "Information", value: 1, color: "#EC4899" },
+  { name: "Immigrtation", value: 0, color: "#8B5CF6" },
+  { name: "Civil services", value: 0, color: "#10B981" },
 ];
 
 const recentTransactions = [
   {
-    label: "Application Assistance",
+    label: "Requested Service",
     date: "May 29, 2024",
     amount: "+RWF 50,000",
     status: "Completed",
   },
   {
-    label: "Document Support",
+    label: "Information",
     date: "May 26, 2024",
     amount: "+RWF 40,000",
-    status: "Completed",
-  },
-  {
-    label: "e-Government Service",
-    date: "May 22, 2024",
-    amount: "+RWF 60,000",
     status: "Completed",
   },
 ];
 
 const recentServices = [
   {
-    label: "Application Assistance - ID Application",
+    label: "Application Assistance ID Application",
     category: "Application & Documentation",
     date: "May 29, 2024",
     status: "Pending",
