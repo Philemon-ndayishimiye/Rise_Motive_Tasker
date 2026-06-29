@@ -123,16 +123,20 @@ export default function StaffMemberLayout() {
           </li>
 
           <li>
-            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
-              <Wallet size={15} />
-              <h1 className="text-[14.5px]">My Earnings</h1>
-            </button>
+            <NavLink
+              to="/staff/delegatedtask"
+              className={navLinkClass}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <ClipboardList size={15} />
+              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            </NavLink>
           </li>
 
           <li>
-            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
-              <ClipboardList size={15} />
-              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Wallet size={15} />
+              <h1 className="text-[14.5px]">My Earnings</h1>
             </button>
           </li>
           <h1 className="text-white text-[15px] font-family-playfair pl-2">
@@ -140,7 +144,7 @@ export default function StaffMemberLayout() {
           </h1>
 
           <li>
-            <button  className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
               <Headset size={15} />
               <h1 className="text-[14.5px]">Messages</h1>
             </button>

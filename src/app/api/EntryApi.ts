@@ -31,7 +31,9 @@ export const apiSlice = createApi({
     "LegalService",
     "CreativeMediaService",
     "Course",
-    "NewServiceRequest"
+    "NewServiceRequest",
+    "TaskerNotification",
+    "TaskAssignment",
   ],
   endpoints: () => ({}),
 });

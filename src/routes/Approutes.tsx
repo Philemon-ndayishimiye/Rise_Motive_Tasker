@@ -19,13 +19,13 @@ import Login from "@/pages/Login";
 import InfoPostAdmin from "@/layouts/Admin/Information";
 import SpotService from "@/layouts/Admin/SpotService";
 import Courses from "@/layouts/Admin/Courses";
-import TaskerLayout from "@/layouts/Tasker/TaskerLayout";
-import TaskerDashboard from "@/layouts/Tasker/Dashboard";
+//import TaskerLayout from "@/layouts/Tasker/TaskerLayout";
+//import TaskerDashboard from "@/layouts/Tasker/Dashboard";
 import MediaLayout from "@/layouts/Media/MediaLayout";
 import MediaDashboard from "@/layouts/Media/MediaDashboard";
-import ServiceRequest from "@/layouts/Tasker/ServiceRequest";
-import TaskerSettings from "@/layouts/Tasker/settings";
-import TaskerProfile from "@/layouts/Tasker/TaskerProfile";
+//import ServiceRequest from "@/layouts/Tasker/ServiceRequest";
+//import TaskerSettings from "@/layouts/Tasker/settings";
+//import TaskerProfile from "@/layouts/Tasker/TaskerProfile";
 import MediaInformation from "@/layouts/Media/MediaInformtion";
 import MediaProduct from "@/layouts/Media/MediaProduct";
 import MediaSettings from "@/layouts/Media/MediaSettings";
@@ -62,6 +62,8 @@ import RMJuniorSettings from "@/layouts/RM-Junior/RMJuniorSettings";
 import RMStoreCyberOrderedProduct from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberOrderedProduct";
 import RMStoreOrderedProduct from "@/layouts/Senior-RMT-Store/RMStoreOrderedProduct";
 import StaffMemberOrderedProduct from "@/layouts/RM-Staff-Member/StaffMemberOrderedProduct";
+import RMStoreCyberDelegatedPage from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberDelegatedPage";
+import StaffMemberDeligated from "@/layouts/RM-Staff-Member/StaffMemberDeligated";
 
 // staff members
 // RM store
@@ -95,12 +97,12 @@ const AppRouter = () => {
 
         {/* Tasker */}
 
-        <Route path="/tasker" element={<TaskerLayout />}>
+        {/* <Route path="/tasker" element={<TaskerLayout />}>
           <Route path="dashboard" element={<TaskerDashboard />} />
           <Route path="service" element={<ServiceRequest />} />
           <Route path="settings" element={<TaskerSettings />} />
           <Route path="profile" element={<TaskerProfile />} />
-        </Route>
+        </Route> */}
 
         {/* Media */}
 
@@ -122,6 +124,7 @@ const AppRouter = () => {
           <Route path="profile" element={<StaffMemberProfile />} />
           <Route path="servicerequest" element={<StaffServiceRequests />} />
           <Route path="order" element={<StaffMemberOrderedProduct />} />
+          <Route path="delegatedtask" element={<StaffMemberDeligated />} />
         </Route>
 
         {/** rmstore */}
@@ -134,7 +137,7 @@ const AppRouter = () => {
           <Route path="order" element={<RMStoreOrderedProduct />} />
         </Route>
 
-        {/** RMStoreCyber */}
+        {/** RMStoreCyber delegated */}
 
         <Route path="/rmstoreCyber" element={<RMStoreCyberLayout />}>
           <Route path="dashboard" element={<RMStoreCyberDashboard />} />
@@ -142,6 +145,7 @@ const AppRouter = () => {
           <Route path="settings" element={<RMStoreCyberSettings />} />
           <Route path="profile" element={<RMStoreCyberProfile />} />
           <Route path="order" element={<RMStoreCyberOrderedProduct />} />
+          <Route path="delegatedtask" element={<RMStoreCyberDelegatedPage />} />
           <Route
             path="servicerequest"
             element={<RMStoreCyberServiceRequests />}

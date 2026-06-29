@@ -1,51 +1,11 @@
 import { apiSlice } from "../../api/EntryApi";
 
-export interface ServiceRequest {
-  id: number;
-  trackingCode: string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail?: string;
-  service?: string;
-  description: string;
-  documentUrl?: string;
-  preferredDate?: string;
-  status: "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
-  tasker?: string;
-  createdAt: string;
-  updatedAt: string;
-   category?: string;
-}
-
-// Add this interface at the top
-
-export interface TaskerDashboardResponse {
-  tasker: {
-    id: number;
-    name: string;
-    email?: string;
-    title: string;
-    specialties: string;
-    image?: string;
-  };
-  services: {
-    egov: ServiceRequest[];
-    applicationDocs: ServiceRequest[];
-    creativeMedia: ServiceRequest[];
-    webDigital: ServiceRequest[];
-    legal: ServiceRequest[];
-    newService: ServiceRequest[];
-  };
-  summary: {
-    totalAssigned: number;
-    egov: number;
-    applicationDocs: number;
-    creativeMedia: number;
-    webDigital: number;
-    legal: number;
-    newService: number;
-  };
-}
+export type TaskerRole =
+  | "RM_STAFF_MEMBER"
+  | "SENIOR_RMT_STORE"
+  | "SENIOR_RMT_STORE_AND_CYBER"
+  | "SENIOR_RMT_CYBER"
+  | "RM_TASKER_JUNIOR";
 
 export interface Tasker {
   id: number;
@@ -54,8 +14,16 @@ export interface Tasker {
   image?: string;
   phone: string;
   email?: string;
+  province?: string;
+  district?: string;
+  sector?: string;
   specialties: string;
+  shortNotesService?: string;
+  shortNotePapeterie?: string;
+  shortNote?: string;
   isActive: boolean;
+  role?: TaskerRole;
+  papeterieName?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -63,12 +31,19 @@ export interface Tasker {
 export interface CreateTaskerRequest {
   name: string;
   title: string;
-  image?: string; // URL string (paste URL mode or returned from server)
-  imageFile?: File | null; // actual File object for multipart upload
+  image?: string;
+  imageFile?: File | null;
   phone: string;
   email?: string;
+  province?: string;
+  district?: string;
+  sector?: string;
   specialties: string;
+  shortNotesService?: string;
+  shortNotePapeterie?: string;
   isActive: boolean;
+  role?: TaskerRole;
+  papeterieName?: string;
 }
 
 export interface UpdateTaskerRequest extends Partial<CreateTaskerRequest> {
@@ -97,6 +72,7 @@ export const taskerApi = apiSlice.injectEndpoints({
 
     createTasker: builder.mutation<Tasker, CreateTaskerRequest>({
       query: (data) => {
+        console.log("TASKER DATA:", data);
         // Build multipart FormData — same pattern as InfoPost
         const formData = new FormData();
         formData.append("name", data.name);
@@ -117,12 +93,40 @@ export const taskerApi = apiSlice.injectEndpoints({
           formData.append("image", data.image);
         }
 
+        // ── Location fields — only append if a value was selected ──
+        if (data.province) {
+          formData.append("province", data.province);
+        }
+        if (data.district) {
+          formData.append("district", data.district);
+        }
+
+        if (data.shortNotesService) {
+          formData.append("shortNotesService", data.shortNotesService);
+        }
+
+        if (data.shortNotePapeterie) {
+          formData.append("shortNotePapeterie", data.shortNotePapeterie);
+        }
+        if (data.sector) {
+          formData.append("sector", data.sector);
+        }
+
+        if (data.role) {
+          formData.append("role", data.role);
+        }
+        if (data.papeterieName) {
+          formData.append("papeterieName", data.papeterieName);
+        }
+
+        for (const pair of formData.entries()) {
+          console.log(pair[0], pair[1]);
+        }
+
         return {
           url: "taskers",
           method: "POST",
           body: formData,
-          // formData: true tells RTK Query NOT to set Content-Type manually
-          // so browser sets it with the correct multipart boundary
           formData: true,
         };
       },
@@ -130,11 +134,52 @@ export const taskerApi = apiSlice.injectEndpoints({
     }),
 
     updateTasker: builder.mutation<Tasker, UpdateTaskerRequest>({
-      query: ({ id, ...data }) => ({
-        url: `taskers/${id}`,
-        method: "PUT",
-        body: data,
-      }),
+      query: ({ id, ...data }) => {
+        const formData = new FormData();
+        if (data.name !== undefined) formData.append("name", data.name);
+        if (data.title !== undefined) formData.append("title", data.title);
+        if (data.phone !== undefined) formData.append("phone", data.phone);
+        if (data.specialties !== undefined)
+          formData.append("specialties", data.specialties);
+        if (data.isActive !== undefined)
+          formData.append("isActive", String(data.isActive));
+        if (data.email !== undefined) formData.append("email", data.email);
+        if (data.imageFile) {
+          formData.append("image", data.imageFile);
+        } else if (data.image !== undefined) {
+          formData.append("image", data.image);
+        }
+
+        if (data.shortNotesService !== undefined) {
+          formData.append("shortNoteService", data.shortNotesService);
+        }
+
+        if (data.shortNotePapeterie !== undefined) {
+          formData.append("shortNotePapeterie", data.shortNotePapeterie);
+        }
+        // ── Location fields — only append if a value was selected ──
+        if (data.province !== undefined) {
+          formData.append("province", data.province);
+        }
+        if (data.district !== undefined) {
+          formData.append("district", data.district);
+        }
+        if (data.sector !== undefined) {
+          formData.append("sector", data.sector);
+        }
+        if (data.role !== undefined) {
+          formData.append("role", data.role);
+        }
+        if (data.papeterieName !== undefined) {
+          formData.append("papeterieName", data.papeterieName);
+        }
+        return {
+          url: `taskers/${id}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
       invalidatesTags: (_result, _error, { id }) => [
         { type: "Tasker", id },
         "Tasker",
@@ -156,14 +201,6 @@ export const taskerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Tasker"],
     }),
-
-    getMyServices: builder.query<TaskerDashboardResponse, void>({
-      query: () => ({
-        url: "tasker/my-services",
-        method: "GET",
-      }),
-      providesTags: ["Tasker"],
-    }),
   }),
 });
 
@@ -174,5 +211,4 @@ export const {
   useUpdateTaskerMutation,
   useDeleteTaskerMutation,
   useToggleActivateTaskerMutation,
-  useGetMyServicesQuery,
 } = taskerApi;

@@ -113,16 +113,20 @@ export default function RMStoreCyberLayout() {
           </li>
 
           <li>
-            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
-              <Wallet size={15} />
-              <h1 className="text-[14.5px]">My Earnings</h1>
-            </button>
+            <NavLink
+              to="/RMStoreCyber/delegatedtask"
+              className={navLinkClass}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <ClipboardList size={15} />
+              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            </NavLink>
           </li>
 
           <li>
-            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
-              <ClipboardList size={15} />
-              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+              <Wallet size={15} />
+              <h1 className="text-[14.5px]">My Earnings</h1>
             </button>
           </li>
 
