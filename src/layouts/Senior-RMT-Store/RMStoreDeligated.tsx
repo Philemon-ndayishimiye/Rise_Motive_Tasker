@@ -1,7 +1,3 @@
-//
-
-//
-
 import { useState, useEffect } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -738,7 +734,7 @@ function OutgoingCard({ assignment }: { assignment: TaskAssignment }) {
 
 type Tab = "my-tasks" | "incoming" | "outgoing";
 
-export default function StaffMemberDeligated() {
+export default function RMStoreDeligated() {
   const [tab, setTab] = useState<Tab>("my-tasks");
   const [search, setSearch] = useState("");
 

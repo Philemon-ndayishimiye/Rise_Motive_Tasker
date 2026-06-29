@@ -82,6 +82,7 @@ function DelegateModal({ task, onClose, currentTaskerId }: DelegateModalProps) {
   const [note, setNote] = useState("");
   const [assignTask, { isLoading }] = useAssignTaskMutation();
   const [success, setSuccess] = useState(false);
+  const [taskerSearch, setTaskerSearch] = useState("");
 
   useEffect(() => {
     // Fetch taskers from backend
@@ -171,48 +172,83 @@ function DelegateModal({ task, onClose, currentTaskerId }: DelegateModalProps) {
               <label className="text-[13px] font-bold text-gray-700 font-family-playfair">
                 Assign To
               </label>
+              <div className="relative mt-1.5 mb-2">
+                <Search
+                  size={12}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  value={taskerSearch}
+                  onChange={(e) => setTaskerSearch(e.target.value)}
+                  placeholder="Search tasker by name or sector..."
+                  className="w-full pl-8 pr-3 py-2 rounded-[10px] border border-blue-100 text-[12px] text-gray-700 outline-none font-family-playfair focus:border-blue-300"
+                />
+                {taskerSearch && (
+                  <button
+                    onClick={() => setTaskerSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2"
+                  >
+                    <X size={11} className="text-gray-400" />
+                  </button>
+                )}
+              </div>
+
               <div className="mt-1.5 space-y-2 max-h-15 overflow-y-auto">
                 {taskers.length === 0 && (
                   <p className="text-[12px] text-gray-400 font-family-playfair py-2">
                     Loading taskers...
                   </p>
                 )}
-                {taskers.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => setSelectedTaskerId(t.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors text-left ${
-                      selectedTaskerId === t.id
-                        ? "border-blue-900 bg-blue-50"
-                        : "border-gray-200 hover:border-blue-200"
-                    }`}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center shrink-0">
-                      {t.image ? (
-                        <img
-                          src={t.image}
-                          alt={t.name}
-                          className="w-full h-full object-cover rounded-full"
-                        />
-                      ) : (
-                        <span className="text-white text-[11px] font-bold">
-                          {t.name?.charAt(0).toUpperCase()}
-                        </span>
+                {taskers
+                  .filter(
+                    (t) =>
+                      !taskerSearch ||
+                      t.name
+                        ?.toLowerCase()
+                        .includes(taskerSearch.toLowerCase()) ||
+                      t.sector
+                        ?.toLowerCase()
+                        .includes(taskerSearch.toLowerCase()) ||
+                      t.title
+                        ?.toLowerCase()
+                        .includes(taskerSearch.toLowerCase()),
+                  )
+                  .map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTaskerId(t.id)}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors text-left ${
+                        selectedTaskerId === t.id
+                          ? "border-blue-900 bg-blue-50"
+                          : "border-gray-200 hover:border-blue-200"
+                      }`}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center shrink-0">
+                        {t.image ? (
+                          <img
+                            src={t.image}
+                            alt={t.name}
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        ) : (
+                          <span className="text-white text-[11px] font-bold">
+                            {t.name?.charAt(0).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-semibold text-gray-800 font-family-playfair">
+                          {t.name}
+                        </p>
+                        <p className="text-[11px] text-gray-400 font-family-playfair truncate">
+                          {t.title} · {t.sector}
+                        </p>
+                      </div>
+                      {selectedTaskerId === t.id && (
+                        <Check size={14} className="text-blue-900 shrink-0" />
                       )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-gray-800 font-family-playfair">
-                        {t.name}
-                      </p>
-                      <p className="text-[11px] text-gray-400 font-family-playfair truncate">
-                        {t.title} · {t.sector}
-                      </p>
-                    </div>
-                    {selectedTaskerId === t.id && (
-                      <Check size={14} className="text-blue-900 shrink-0" />
-                    )}
-                  </button>
-                ))}
+                    </button>
+                  ))}
               </div>
             </div>
 
@@ -722,18 +758,29 @@ export default function RMStoreCyberDelegatedPage() {
   // Outgoing tasks I assigned out
   const { data: outgoing, isLoading: outgoingLoading } =
     useGetOutgoingAssignmentsQuery(currentTaskerId, {
-      skip: tab !== "outgoing" || !currentTaskerId,
+      skip: !currentTaskerId,
     });
 
   // Filter my tasks by tasker name
-  const myTasks = (myTasksData?.items ?? []).filter(
-    (t) =>
+  // IDs of tasks already pending delegation by ME to someone else
+  const pendingOutgoingIds = new Set(
+    (outgoing ?? [])
+      .filter((a) => a.status === "PENDING")
+      .map((a) => String(a.serviceRequestId)),
+  );
+
+  const myTasks = (myTasksData?.items ?? []).filter((t) => {
+    const nameMatch =
       t.tasker?.toLowerCase() === profile?.fullName?.toLowerCase() ||
       t.tasker
         ?.toLowerCase()
-        .includes((profile?.fullName ?? "").toLowerCase().split(" ")[0]),
-  );
+        .includes((profile?.fullName ?? "").toLowerCase().split(" ")[0]);
 
+    // hide tasks I've already delegated and are waiting for a response
+    const notAlreadyDelegated = !pendingOutgoingIds.has(String(t.id));
+
+    return nameMatch && notAlreadyDelegated;
+  });
   // Apply search filter
   const filteredMyTasks = myTasks.filter(
     (t) =>

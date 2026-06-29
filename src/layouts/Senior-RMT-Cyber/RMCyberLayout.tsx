@@ -89,18 +89,24 @@ export default function RMCyberLayout() {
           </li>
 
           <li>
+            <NavLink
+              to="/rmcyber/delegatedtask"
+              className={navLinkClass}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <ClipboardList size={15} />
+              <h1 className="text-[14.5px]">Delegated Tasks</h1>
+            </NavLink>
+          </li>
+
+          <li>
             <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
               <Wallet size={15} />
               <h1 className="text-[14.5px]">My Earnings</h1>
             </button>
           </li>
 
-          <li>
-            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
-              <ClipboardList size={15} />
-              <h1 className="text-[14.5px]">Delegated Tasks</h1>
-            </button>
-          </li>
+          {/* delegatedtask */}
 
           <li className="px-3 pt-4 pb-1">
             <p className="text-blue-300 text-[11px] font-bold uppercase tracking-widest">
@@ -109,17 +115,27 @@ export default function RMCyberLayout() {
           </li>
 
           <li>
-            <button className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+            <a
+              href="https://chat.whatsapp.com/HegyRaWwEUIDJ2UvXAYxEQ?s=cl&p=a&mlu=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left"
+            >
               <Headset size={15} />
               <h1 className="text-[14.5px]">Messages</h1>
-            </button>
+            </a>
           </li>
 
           <li>
-            <button className="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left">
+            <a
+              href="https://wa.me/250795344768"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-blue-700/40 text-white w-full text-left"
+            >
               <LifeBuoy size={15} />
               <h1 className="text-[14.5px]">Contact Support</h1>
-            </button>
+            </a>
           </li>
         </ul>
       </div>

@@ -64,6 +64,9 @@ import RMStoreOrderedProduct from "@/layouts/Senior-RMT-Store/RMStoreOrderedProd
 import StaffMemberOrderedProduct from "@/layouts/RM-Staff-Member/StaffMemberOrderedProduct";
 import RMStoreCyberDelegatedPage from "@/layouts/Senior-RMT-Store-andCyber/RMStoreCyberDelegatedPage";
 import StaffMemberDeligated from "@/layouts/RM-Staff-Member/StaffMemberDeligated";
+import RMCyberDeligated from "@/layouts/Senior-RMT-Cyber/RMCyberDeligated";
+import RMStoreDeligated from "@/layouts/Senior-RMT-Store/RMStoreDeligated";
+import RMJuniorDeligated from "@/layouts/RM-Junior/RMJuniorDeligated";
 
 // staff members
 // RM store
@@ -135,6 +138,7 @@ const AppRouter = () => {
           <Route path="settings" element={<RMStoreSettings />} />
           <Route path="profile" element={<RMStoreProfile />} />
           <Route path="order" element={<RMStoreOrderedProduct />} />
+          <Route path="delegatedtask" element={<RMStoreDeligated />} />
         </Route>
 
         {/** RMStoreCyber delegated */}
@@ -159,6 +163,7 @@ const AppRouter = () => {
           <Route path="settings" element={<RMCyberSettings />} />
           <Route path="profile" element={<RMCyberProfile />} />
           <Route path="servicerequest" element={<RMJuniorServiceRequests />} />
+          <Route path="delegatedtask" element={<RMCyberDeligated />} />
         </Route>
 
         {/** rmjunior */}
@@ -168,6 +173,7 @@ const AppRouter = () => {
           <Route path="settings" element={<RMJuniorSettings />} />
           <Route path="profile" element={<RMJuniorProfile />} />
           <Route path="servicerequest" element={<RMCyberServiceRequests />} />
+          <Route path="delegatedtask" element={<RMJuniorDeligated />} />
         </Route>
       </Routes>
     </BrowserRouter>
