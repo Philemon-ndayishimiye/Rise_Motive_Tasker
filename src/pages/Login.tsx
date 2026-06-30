@@ -264,7 +264,7 @@ export default function TaskerLoginPage() {
                 </a>
               </p>
               
-              <p className="text-right text-xs text-gray-400 mt-6">
+              {/* <p className="text-right text-xs text-gray-400 mt-6">
                 <button
                   type="button"
                   onClick={() => navigate("/forgot-password")}
@@ -272,7 +272,7 @@ export default function TaskerLoginPage() {
                 >
                   Forgot password?
                 </button>
-              </p>
+              </p> */}
             </div>
           </div>
 
