@@ -252,8 +252,8 @@ export default function TaskerLoginPage() {
                 </button>
               </form>
 
-              <p className="text-center text-xs text-gray-400 mt-3 mb-4">
-                Register your Business To be Tasker{" "}
+              <p className="text-left text-xs text-gray-400 pl-3 mt-3 mb-4">
+                Register your Business To be a Tasker{" "}
                 <a
                   href="https://risemotive.rw/apply"
                   target="_blank"
@@ -264,14 +264,14 @@ export default function TaskerLoginPage() {
                 </a>
               </p>
 
-              <p className="text-center text-xs text-gray-400 mt-6">
-                Having trouble? Contact{" "}
-                <a
-                  href="mailto:tasks.risemotive@gmail.com"
-                  className="text-[#1E3A8A] font-semibold hover:underline"
+              <p className="text-right text-xs text-gray-400 mt-6">
+                <button
+                  type="button"
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-[#1E3A8A] font-semibold hover:underline cursor-pointer"
                 >
-                  tasks.risemotive@gmail.com
-                </a>
+                  Forgot password?
+                </button>
               </p>
             </div>
           </div>

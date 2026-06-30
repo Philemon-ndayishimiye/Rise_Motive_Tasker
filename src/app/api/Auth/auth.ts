@@ -5,6 +5,15 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
 export interface LoginResponse {
   token: string;
   message?: string;
@@ -62,6 +71,22 @@ export const authApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
 
+    forgotPassword: builder.mutation<MessageResponse, ForgotPasswordRequest>({
+      query: (data) => ({
+        url: "auth/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    resetPassword: builder.mutation<MessageResponse, ResetPasswordRequest>({
+      query: (data) => ({
+        url: "auth/reset-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     logout: builder.mutation<MessageResponse, void>({
       query: () => ({
         url: "auth/logout",
@@ -101,4 +126,6 @@ export const {
   useLogoutMutation,
   useChangePasswordMutation,
   useUpdateProfilePictureMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;

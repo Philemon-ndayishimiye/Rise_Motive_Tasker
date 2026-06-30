@@ -67,6 +67,8 @@ import StaffMemberDeligated from "@/layouts/RM-Staff-Member/StaffMemberDeligated
 import RMCyberDeligated from "@/layouts/Senior-RMT-Cyber/RMCyberDeligated";
 import RMStoreDeligated from "@/layouts/Senior-RMT-Store/RMStoreDeligated";
 import RMJuniorDeligated from "@/layouts/RM-Junior/RMJuniorDeligated";
+import ResetPasswordPage from "@/pages/ResetPassword";
+import ForgotPasswordPage from "@/pages/ForgotPassword";
 
 // staff members
 // RM store
@@ -77,6 +79,8 @@ const AppRouter = () => {
         {/* All routes inside RootLayout get Navbar + Footer */}
         <Route element={<RootLayout />}>
           <Route path="/" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
