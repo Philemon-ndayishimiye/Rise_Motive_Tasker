@@ -263,7 +263,7 @@ export default function TaskerLoginPage() {
                   Apply Now
                 </a>
               </p>
-{/* 
+              
               <p className="text-right text-xs text-gray-400 mt-6">
                 <button
                   type="button"
@@ -272,7 +272,7 @@ export default function TaskerLoginPage() {
                 >
                   Forgot password?
                 </button>
-              </p> */}
+              </p>
             </div>
           </div>
 
