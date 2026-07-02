@@ -26,7 +26,10 @@ import {
   useGetOutgoingAssignmentsQuery,
   useMarkAssignmentCompleteMutation,
 } from "../../app/api/Taskspot/deligated";
-import { useGetAllNewServiceRequestsQuery } from "../../app/api/Taskspot/newservice";
+import {
+  useGetAllNewServiceRequestsQuery,
+  useUpdateNewServiceStatusMutation,
+} from "../../app/api/Taskspot/newservice";
 import { useGetProfileQuery } from "../../app/api/Auth/auth";
 import type { NewServiceRequest } from "../../app/api/Taskspot/newservice";
 import type { TaskAssignment } from "../../app/api/Taskspot/deligated";
@@ -320,6 +323,16 @@ function MyTaskCard({
   currentTaskerId: number;
 }) {
   const [delegateOpen, setDelegateOpen] = useState(false);
+  const [updateStatus, { isLoading: completing }] =
+    useUpdateNewServiceStatusMutation();
+
+  const handleComplete = async () => {
+    try {
+      await updateStatus({ id: task.id, status: "COMPLETED" }).unwrap();
+    } catch (err) {
+      console.log(err || "Failed to mark complete");
+    }
+  };
 
   return (
     <>
@@ -398,15 +411,24 @@ function MyTaskCard({
         </div>
 
         {/* delegate btn */}
-        {/* delegate btn — only show when task is not completed */}
         {task.status !== "COMPLETED" && (
-          <button
-            onClick={() => setDelegateOpen(true)}
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] bg-blue-900 hover:bg-blue-800 text-white text-[13px] font-bold font-family-playfair transition-colors"
-          >
-            <SendHorizontal size={13} />
-            Delegate Task
-          </button>
+          <div className="flex gap-2.5">
+            <button
+              onClick={() => setDelegateOpen(true)}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] bg-blue-900 hover:bg-blue-800 text-white text-[13px] font-bold font-family-playfair transition-colors"
+            >
+              <SendHorizontal size={13} />
+              Delegate
+            </button>
+            <button
+              onClick={handleComplete}
+              disabled={completing}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] bg-green-600 hover:bg-green-700 text-white text-[13px] font-bold font-family-playfair disabled:opacity-50 transition-colors"
+            >
+              <CheckCheck size={13} />
+              {completing ? "..." : "Complete"}
+            </button>
+          </div>
         )}
       </div>
 
@@ -428,6 +450,19 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
   const [reject, { isLoading: rejecting }] = useRejectAssignmentMutation();
   const [complete, { isLoading: completing }] =
     useMarkAssignmentCompleteMutation();
+
+  const isPending = assignment.status === "PENDING";
+  const isAccepted = assignment.status === "ACCEPTED";
+
+  const totalAmount = parseFloat(assignment.amount) || 0;
+  const myMoney =
+    totalAmount > 0
+      ? Math.round(
+          totalAmount * (assignment.splitPercentB / 100),
+        ).toLocaleString()
+      : null;
+
+  const task = assignment.serviceRequest;
 
   const handleAccept = async () => {
     try {
@@ -453,19 +488,9 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
     }
   };
 
-  const isPending = assignment.status === "PENDING";
-  const isAccepted = assignment.status === "ACCEPTED";
-  const task = assignment.serviceRequest;
-
-  // calculate tasker B's actual money
-  const rawAmount = parseFloat(assignment.amount.replace(/[^0-9.]/g, ""));
-  const myMoney = isNaN(rawAmount)
-    ? null
-    : ((rawAmount * assignment.splitPercentB) / 100).toLocaleString();
-
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-3 hover:shadow-md transition-shadow">
-      {/* ── Sent by ── */}
+      {/* top row — who assigned */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-full bg-blue-900 flex items-center justify-center shrink-0">
@@ -495,26 +520,18 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
 
       <div className="border-t border-gray-50" />
 
-      {/* ── Task details ── */}
+      {/* task details */}
       {task ? (
         <div className="space-y-2">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide font-family-playfair">
-            Task Details
-          </p>
-
-          {/* service name + tracking */}
-          <div>
-            <p className="text-[13px] font-bold text-blue-900 font-family-playfair leading-snug">
+          <div className="flex items-center justify-between">
+            <p className="text-[13px] font-bold text-blue-900 font-family-playfair">
               {task.service || "—"}
             </p>
-            {task.trackingCode && (
-              <p className="text-[10px] text-gray-400 font-family-playfair">
-                {task.trackingCode}
-              </p>
-            )}
+            <span className="text-[10px] text-gray-400 font-family-playfair">
+              {task.trackingCode}
+            </span>
           </div>
 
-          {/* info grid */}
           <div className="grid grid-cols-2 gap-2">
             <div className="flex items-center gap-1.5">
               <User size={11} className="text-gray-400 shrink-0" />
@@ -564,7 +581,6 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
             )}
           </div>
 
-          {/* description */}
           {task.description && (
             <div className="bg-gray-50 rounded-xl px-3 py-2">
               <p className="text-[11px] text-gray-500 font-family-playfair leading-snug line-clamp-2">
@@ -581,7 +597,7 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
 
       <div className="border-t border-gray-50" />
 
-      {/* ── Split + your actual money ── */}
+      {/* split + money */}
       <div className="flex items-center gap-3">
         <div className="flex-1 bg-green-50 rounded-xl px-3 py-2 text-center">
           <p className="text-[10px] text-gray-400 font-family-playfair">
@@ -614,7 +630,7 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
         </div>
       </div>
 
-      {/* ── Note ── */}
+      {/* note */}
       {assignment.note && (
         <div className="bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
           <p className="text-[11px] text-amber-700 font-family-playfair leading-snug">
@@ -627,7 +643,7 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
         {timeAgo(assignment.createdAt)}
       </p>
 
-      {/* ── Accept / Reject — only when PENDING ── */}
+      {/* accept / reject — PENDING only */}
       {isPending && (
         <div className="flex gap-2.5">
           <button
@@ -649,7 +665,7 @@ function IncomingCard({ assignment }: { assignment: TaskAssignment }) {
         </div>
       )}
 
-      {/* ── Mark Complete — only when ACCEPTED ── */}
+      {/* mark complete — ACCEPTED only */}
       {isAccepted && (
         <button
           onClick={handleComplete}
